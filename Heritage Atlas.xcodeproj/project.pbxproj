@@ -1,0 +1,1004 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE8A28E0303F5EF700772DF7 /* Heritage Atlas Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CE8A28DF303F5EF700772DF7 /* Heritage Atlas Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CE8A28CA303F5EF700772DF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE8A28B4303F5EF500772DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE8A28BB303F5EF600772DF7;
+			remoteInfo = "Heritage Atlas";
+		};
+		CE8A28D4303F5EF700772DF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE8A28B4303F5EF500772DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE8A28BB303F5EF600772DF7;
+			remoteInfo = "Heritage Atlas";
+		};
+		CE8A28E1303F5EF700772DF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE8A28B4303F5EF500772DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE8A28DE303F5EF700772DF7;
+			remoteInfo = "Heritage Atlas Watch App";
+		};
+		CE8A28EF303F5EF800772DF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE8A28B4303F5EF500772DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE8A28DE303F5EF700772DF7;
+			remoteInfo = "Heritage Atlas Watch App";
+		};
+		CE8A28F9303F5EF800772DF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE8A28B4303F5EF500772DF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE8A28DE303F5EF700772DF7;
+			remoteInfo = "Heritage Atlas Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE8A2905303F5EF800772DF7 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CE8A28E0303F5EF700772DF7 /* Heritage Atlas Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CE8A28BC303F5EF600772DF7 /* Heritage Atlas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Heritage Atlas.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A28C9303F5EF700772DF7 /* Heritage AtlasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage AtlasTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A28D3303F5EF700772DF7 /* Heritage AtlasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage AtlasUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A28DF303F5EF700772DF7 /* Heritage Atlas Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Heritage Atlas Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A28EE303F5EF800772DF7 /* Heritage Atlas Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage Atlas Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A28F8303F5EF800772DF7 /* Heritage Atlas Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage Atlas Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE8A28BE303F5EF600772DF7 /* Heritage Atlas */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage Atlas";
+			sourceTree = "<group>";
+		};
+		CE8A28CC303F5EF700772DF7 /* Heritage AtlasTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage AtlasTests";
+			sourceTree = "<group>";
+		};
+		CE8A28D6303F5EF700772DF7 /* Heritage AtlasUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage AtlasUITests";
+			sourceTree = "<group>";
+		};
+		CE8A28E3303F5EF700772DF7 /* Heritage Atlas Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage Atlas Watch App";
+			sourceTree = "<group>";
+		};
+		CE8A28F1303F5EF800772DF7 /* Heritage Atlas Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage Atlas Watch AppTests";
+			sourceTree = "<group>";
+		};
+		CE8A28FB303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Heritage Atlas Watch AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE8A28B9303F5EF600772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28C6303F5EF700772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28D0303F5EF700772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28DC303F5EF700772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28EB303F5EF800772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28F5303F5EF800772DF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE8A28B3303F5EF500772DF7 = {
+			isa = PBXGroup;
+			children = (
+				CE8A28BE303F5EF600772DF7 /* Heritage Atlas */,
+				CE8A28CC303F5EF700772DF7 /* Heritage AtlasTests */,
+				CE8A28D6303F5EF700772DF7 /* Heritage AtlasUITests */,
+				CE8A28E3303F5EF700772DF7 /* Heritage Atlas Watch App */,
+				CE8A28F1303F5EF800772DF7 /* Heritage Atlas Watch AppTests */,
+				CE8A28FB303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */,
+				CE8A28BD303F5EF600772DF7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE8A28BD303F5EF600772DF7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE8A28BC303F5EF600772DF7 /* Heritage Atlas.app */,
+				CE8A28C9303F5EF700772DF7 /* Heritage AtlasTests.xctest */,
+				CE8A28D3303F5EF700772DF7 /* Heritage AtlasUITests.xctest */,
+				CE8A28DF303F5EF700772DF7 /* Heritage Atlas Watch App.app */,
+				CE8A28EE303F5EF800772DF7 /* Heritage Atlas Watch AppTests.xctest */,
+				CE8A28F8303F5EF800772DF7 /* Heritage Atlas Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CE8A28BB303F5EF600772DF7 /* Heritage Atlas */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A2906303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas" */;
+			buildPhases = (
+				CE8A28B8303F5EF600772DF7 /* Sources */,
+				CE8A28B9303F5EF600772DF7 /* Frameworks */,
+				CE8A28BA303F5EF600772DF7 /* Resources */,
+				CE8A2905303F5EF800772DF7 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE8A28E2303F5EF700772DF7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28BE303F5EF600772DF7 /* Heritage Atlas */,
+			);
+			name = "Heritage Atlas";
+			packageProductDependencies = (
+			);
+			productName = "Heritage Atlas";
+			productReference = CE8A28BC303F5EF600772DF7 /* Heritage Atlas.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CE8A28C8303F5EF700772DF7 /* Heritage AtlasTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A2909303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage AtlasTests" */;
+			buildPhases = (
+				CE8A28C5303F5EF700772DF7 /* Sources */,
+				CE8A28C6303F5EF700772DF7 /* Frameworks */,
+				CE8A28C7303F5EF700772DF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE8A28CB303F5EF700772DF7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28CC303F5EF700772DF7 /* Heritage AtlasTests */,
+			);
+			name = "Heritage AtlasTests";
+			packageProductDependencies = (
+			);
+			productName = "Heritage AtlasTests";
+			productReference = CE8A28C9303F5EF700772DF7 /* Heritage AtlasTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CE8A28D2303F5EF700772DF7 /* Heritage AtlasUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A290C303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage AtlasUITests" */;
+			buildPhases = (
+				CE8A28CF303F5EF700772DF7 /* Sources */,
+				CE8A28D0303F5EF700772DF7 /* Frameworks */,
+				CE8A28D1303F5EF700772DF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE8A28D5303F5EF700772DF7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28D6303F5EF700772DF7 /* Heritage AtlasUITests */,
+			);
+			name = "Heritage AtlasUITests";
+			packageProductDependencies = (
+			);
+			productName = "Heritage AtlasUITests";
+			productReference = CE8A28D3303F5EF700772DF7 /* Heritage AtlasUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CE8A28DE303F5EF700772DF7 /* Heritage Atlas Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A2902303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch App" */;
+			buildPhases = (
+				CE8A28DB303F5EF700772DF7 /* Sources */,
+				CE8A28DC303F5EF700772DF7 /* Frameworks */,
+				CE8A28DD303F5EF700772DF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28E3303F5EF700772DF7 /* Heritage Atlas Watch App */,
+			);
+			name = "Heritage Atlas Watch App";
+			packageProductDependencies = (
+			);
+			productName = "Heritage Atlas Watch App";
+			productReference = CE8A28DF303F5EF700772DF7 /* Heritage Atlas Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CE8A28ED303F5EF800772DF7 /* Heritage Atlas Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A290F303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch AppTests" */;
+			buildPhases = (
+				CE8A28EA303F5EF800772DF7 /* Sources */,
+				CE8A28EB303F5EF800772DF7 /* Frameworks */,
+				CE8A28EC303F5EF800772DF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE8A28F0303F5EF800772DF7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28F1303F5EF800772DF7 /* Heritage Atlas Watch AppTests */,
+			);
+			name = "Heritage Atlas Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "Heritage Atlas Watch AppTests";
+			productReference = CE8A28EE303F5EF800772DF7 /* Heritage Atlas Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CE8A28F7303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE8A2912303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch AppUITests" */;
+			buildPhases = (
+				CE8A28F4303F5EF800772DF7 /* Sources */,
+				CE8A28F5303F5EF800772DF7 /* Frameworks */,
+				CE8A28F6303F5EF800772DF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE8A28FA303F5EF800772DF7 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CE8A28FB303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */,
+			);
+			name = "Heritage Atlas Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "Heritage Atlas Watch AppUITests";
+			productReference = CE8A28F8303F5EF800772DF7 /* Heritage Atlas Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE8A28B4303F5EF500772DF7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					CE8A28BB303F5EF600772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					CE8A28C8303F5EF700772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = CE8A28BB303F5EF600772DF7;
+					};
+					CE8A28D2303F5EF700772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = CE8A28BB303F5EF600772DF7;
+					};
+					CE8A28DE303F5EF700772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					CE8A28ED303F5EF800772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = CE8A28DE303F5EF700772DF7;
+					};
+					CE8A28F7303F5EF800772DF7 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = CE8A28DE303F5EF700772DF7;
+					};
+				};
+			};
+			buildConfigurationList = CE8A28B7303F5EF500772DF7 /* Build configuration list for PBXProject "Heritage Atlas" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CE8A28B3303F5EF500772DF7;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CE8A28BD303F5EF600772DF7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE8A28BB303F5EF600772DF7 /* Heritage Atlas */,
+				CE8A28C8303F5EF700772DF7 /* Heritage AtlasTests */,
+				CE8A28D2303F5EF700772DF7 /* Heritage AtlasUITests */,
+				CE8A28DE303F5EF700772DF7 /* Heritage Atlas Watch App */,
+				CE8A28ED303F5EF800772DF7 /* Heritage Atlas Watch AppTests */,
+				CE8A28F7303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE8A28BA303F5EF600772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28C7303F5EF700772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28D1303F5EF700772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28DD303F5EF700772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28EC303F5EF800772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28F6303F5EF800772DF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE8A28B8303F5EF600772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28C5303F5EF700772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28CF303F5EF700772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28DB303F5EF700772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28EA303F5EF800772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE8A28F4303F5EF800772DF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CE8A28CB303F5EF700772DF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE8A28BB303F5EF600772DF7 /* Heritage Atlas */;
+			targetProxy = CE8A28CA303F5EF700772DF7 /* PBXContainerItemProxy */;
+		};
+		CE8A28D5303F5EF700772DF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE8A28BB303F5EF600772DF7 /* Heritage Atlas */;
+			targetProxy = CE8A28D4303F5EF700772DF7 /* PBXContainerItemProxy */;
+		};
+		CE8A28E2303F5EF700772DF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE8A28DE303F5EF700772DF7 /* Heritage Atlas Watch App */;
+			targetProxy = CE8A28E1303F5EF700772DF7 /* PBXContainerItemProxy */;
+		};
+		CE8A28F0303F5EF800772DF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE8A28DE303F5EF700772DF7 /* Heritage Atlas Watch App */;
+			targetProxy = CE8A28EF303F5EF800772DF7 /* PBXContainerItemProxy */;
+		};
+		CE8A28FA303F5EF800772DF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE8A28DE303F5EF700772DF7 /* Heritage Atlas Watch App */;
+			targetProxy = CE8A28F9303F5EF800772DF7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CE8A2900303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CE8A2901303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		CE8A2903303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Heritage Atlas";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "quan.ba.le.Heritage-Atlas";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		CE8A2904303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Heritage Atlas";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "quan.ba.le.Heritage-Atlas";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Release;
+		};
+		CE8A2907303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Heritage Atlas";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CE8A2908303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Heritage Atlas";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE8A290A303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-AtlasTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heritage Atlas.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heritage Atlas";
+			};
+			name = Debug;
+		};
+		CE8A290B303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-AtlasTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heritage Atlas.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heritage Atlas";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE8A290D303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-AtlasUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Heritage Atlas";
+			};
+			name = Debug;
+		};
+		CE8A290E303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-AtlasUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Heritage Atlas";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE8A2910303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heritage Atlas Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heritage Atlas Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		CE8A2911303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heritage Atlas Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heritage Atlas Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Release;
+		};
+		CE8A2913303F5EF800772DF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Heritage Atlas Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		CE8A2914303F5EF800772DF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 523932867R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "quan.ba.le.Heritage-Atlas-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Heritage Atlas Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE8A28B7303F5EF500772DF7 /* Build configuration list for PBXProject "Heritage Atlas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A2900303F5EF800772DF7 /* Debug */,
+				CE8A2901303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A2902303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A2903303F5EF800772DF7 /* Debug */,
+				CE8A2904303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A2906303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A2907303F5EF800772DF7 /* Debug */,
+				CE8A2908303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A2909303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage AtlasTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A290A303F5EF800772DF7 /* Debug */,
+				CE8A290B303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A290C303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage AtlasUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A290D303F5EF800772DF7 /* Debug */,
+				CE8A290E303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A290F303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A2910303F5EF800772DF7 /* Debug */,
+				CE8A2911303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE8A2912303F5EF800772DF7 /* Build configuration list for PBXNativeTarget "Heritage Atlas Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE8A2913303F5EF800772DF7 /* Debug */,
+				CE8A2914303F5EF800772DF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE8A28B4303F5EF500772DF7 /* Project object */;
+}
