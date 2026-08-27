@@ -1,24 +1,34 @@
-//
-//  ContentView.swift
-//  Heritage Atlas Watch App
-//
-//  Created by Le Ba Quan on 27/8/26.
-//
-
+import HeritageAtlasCore
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Query private var envelopes: [WatchSnapshotEnvelope]
+
+    private var snapshot: WatchSnapshot? {
+        try? envelopes.first?.snapshot()
+    }
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            if let snapshot {
+                WatchHomeView(snapshot: snapshot)
+            } else {
+                SnapshotEmptyView()
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
+#Preview("Home") {
+    let container = PersistenceController.makeInMemoryWatchContainer()
+    let context = ModelContext(container)
+    try? WatchSnapshotApplier.apply(WatchSnapshotExplorer.sample(), to: context)
+    return ContentView()
+        .modelContainer(container)
+}
+
+#Preview("Empty") {
     ContentView()
+        .modelContainer(PersistenceController.makeInMemoryWatchContainer())
 }
