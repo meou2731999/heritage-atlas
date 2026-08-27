@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "1.3.0",
+	"bspVersion": "2.2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/lebaquan/Heritage Atlas/Heritage Atlas.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/lebaquan/Library/Developer/Xcode/DerivedData/Heritage_Atlas-foltjhrqjstbuvepwenmntnzmtvo",
+	"scheme": "Heritage Atlas",
+	"kind": "xcode"
+}

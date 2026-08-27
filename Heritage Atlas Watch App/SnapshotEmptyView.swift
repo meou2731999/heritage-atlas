@@ -3,7 +3,7 @@ import SwiftUI
 struct SnapshotEmptyView: View {
     var body: some View {
         ContentUnavailableView {
-            Label("Heritage Atlas", systemImage: "applewatch.and.iphone")
+            Label("Heritage Atlas", systemImage: "iphone")
         } description: {
             Text("Open Heritage Atlas on iPhone")
         }
