@@ -82,4 +82,16 @@ struct KinshipNamerTests {
         #expect(naming.youCallThem == "Grandfather")
         #expect(naming.theyCallYou == "Grandson")
     }
+
+    @Test func twoPersonLookupRewritesYouToSpeakerName() {
+        let path = family.graph.shortestPath(from: family.father.id, to: family.paternalGrandfather.id)!
+        let fromFather = KinshipNamer.name(path: path, graph: family.graph, locale: .en)
+        #expect(fromFather.spokenPathExplanation(speakerIsUser: true, speakerName: "Ba") == fromFather.pathExplanation)
+        #expect(fromFather.spokenPathExplanation(speakerIsUser: false, speakerName: "Ba") == "Ba’s father")
+
+        let vi = KinshipNamer.name(path: path, graph: family.graph, locale: .vi)
+        let rewritten = vi.spokenPathExplanation(speakerIsUser: false, speakerName: "Ba")
+        #expect(rewritten.contains("của Ba"))
+        #expect(rewritten.contains("của bạn") == false)
+    }
 }

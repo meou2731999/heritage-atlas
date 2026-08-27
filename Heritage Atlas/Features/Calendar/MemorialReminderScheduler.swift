@@ -3,7 +3,7 @@ import UserNotifications
 import HeritageAtlasCore
 
 enum MemorialReminderScheduler {
-    static func refresh(events: [FamilyCalendarEvent], enabled: Bool) async {
+    static func refresh(events: [FamilyCalendarEvent], enabled: Bool, locale: KinshipLocale = .en) async {
         let center = UNUserNotificationCenter.current()
         if enabled == false {
             await center.removeAllPendingNotificationRequests()
@@ -17,7 +17,7 @@ enum MemorialReminderScheduler {
         await center.removeAllPendingNotificationRequests()
         for event in events.prefix(64) {
             let content = UNMutableNotificationContent()
-            content.title = event.kind.localizedName(.en)
+            content.title = event.kind.localizedName(locale)
             content.body = event.subtitle
             content.sound = .default
             var date = DateComponents()

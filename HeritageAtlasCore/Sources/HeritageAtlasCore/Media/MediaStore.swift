@@ -3,7 +3,7 @@ import Foundation
 
 /// Files live on disk at `Application Support/Media/{uuid}`. SwiftData only stores `MediaRef` metadata.
 public actor MediaStore {
-    public let directory: URL
+    nonisolated public let directory: URL
 
     public init(baseDirectory: URL? = nil) {
         let base = baseDirectory
@@ -13,7 +13,7 @@ public actor MediaStore {
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
 
-    public func url(for id: UUID, relativePath: String? = nil) -> URL {
+    nonisolated public func url(for id: UUID, relativePath: String? = nil) -> URL {
         if let relativePath, !relativePath.isEmpty {
             return directory.appending(path: relativePath)
         }

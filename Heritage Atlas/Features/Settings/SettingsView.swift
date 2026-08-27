@@ -83,7 +83,8 @@ struct SettingsView: View {
                                 )
                                 await MemorialReminderScheduler.refresh(
                                     events: FamilyCalendar.events(from: source),
-                                    enabled: enabled
+                                    enabled: enabled,
+                                    locale: settings?.localeKinship ?? .en
                                 )
                             }
                         }

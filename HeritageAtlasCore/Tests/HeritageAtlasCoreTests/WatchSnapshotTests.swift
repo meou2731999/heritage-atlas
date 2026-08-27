@@ -170,4 +170,39 @@ struct WatchSnapshotTests {
         let snapshot = try JSONDecoder().decode(WatchSnapshot.self, from: data)
         #expect(snapshot.people == nil)
     }
+
+    @Test @MainActor func packAttachesShortAudioPreviewForFeaturedStory() throws {
+        let phone = PersistenceController.makeInMemoryPhoneContainer()
+        let context = ModelContext(phone)
+        let me = Person(fullName: "Nguyễn Văn Quân", gender: .male)
+        context.insert(me)
+        let mediaID = UUID()
+        let audio = Data(count: 80)
+        let ref = MediaRef(id: mediaID, kind: .audio, relativePath: "\(mediaID.uuidString).m4a", byteSize: audio.count)
+        context.insert(ref)
+        let story = Memory(
+            kind: .story,
+            title: "Watch story",
+            personIDs: [me.id],
+            mediaIDs: [mediaID],
+            isFeatured: true
+        )
+        context.insert(story)
+        let settings = AppSettings.current(in: context)
+        settings.mePersonID = me.id
+        settings.favoritePersonIDs = [me.id]
+        try context.save()
+
+        let graph = try RelationshipGraphBuilder.make(from: context)
+        let cache = RelationshipCache.rebuild(meID: me.id, graph: graph, locale: .vi)
+        let snapshot = try WatchSnapshotPackager.pack(
+            from: context,
+            cache: cache,
+            mediaByID: [mediaID: ref],
+            loadMedia: { id in id == mediaID ? audio : nil }
+        )
+        #expect(snapshot.featuredMemories.first?.audioPreview?.count == 80)
+        #expect(WatchMediaPreview.shortAudio(from: Data(count: 200_000)) == nil)
+        #expect(WatchMediaPreview.jpegThumbnail(from: Data([0x00, 0x01])) == nil)
+    }
 }

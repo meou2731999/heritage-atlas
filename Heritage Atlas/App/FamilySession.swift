@@ -356,10 +356,15 @@ final class FamilySession {
     private func pushWatchSnapshot(context: ModelContext) {
         let media = (try? context.fetch(FetchDescriptor<MediaRef>())) ?? []
         let byID = Dictionary(uniqueKeysWithValues: media.map { ($0.id, $0) })
+        let paths = mediaPathByID
+        let store = mediaStore
         guard let snapshot = try? WatchSnapshotPackager.pack(
             from: context,
             cache: cacheController.cache,
-            mediaByID: byID
+            mediaByID: byID,
+            loadMedia: { id in
+                try? Data(contentsOf: store.url(for: id, relativePath: paths[id]))
+            }
         ) else { return }
         try? WatchConnectivityService.shared.sendSnapshot(snapshot)
     }

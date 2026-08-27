@@ -97,7 +97,11 @@ struct MemorialCalendarView: View {
         .onChange(of: remindersEnabled) { _, enabled in
             session.setMemorialRemindersEnabled(enabled, context: modelContext)
             Task {
-                await MemorialReminderScheduler.refresh(events: calendarEvents, enabled: enabled)
+                await MemorialReminderScheduler.refresh(
+                    events: calendarEvents,
+                    enabled: enabled,
+                    locale: locale
+                )
             }
         }
     }

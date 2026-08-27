@@ -1,5 +1,6 @@
 import HeritageAtlasCore
 import SwiftUI
+import UIKit
 
 struct PersonGlanceView: View {
     let snapshot: WatchSnapshot
@@ -86,11 +87,21 @@ struct PersonGlanceView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(featured.title)
                             .font(.headline)
+                        if let jpeg = featured.thumbnailJPEG, let image = UIImage(data: jpeg) {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxHeight: 56)
+                                .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        }
                         if let preview = featured.bodyPreview, preview.isEmpty == false {
                             Text(preview)
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                                 .lineLimit(3)
+                        }
+                        if let audio = featured.audioPreview, audio.isEmpty == false {
+                            WatchClipPlayer(data: audio)
                         }
                     }
                 }

@@ -18,6 +18,7 @@ struct MemoryEditorView: View {
     @Query(sort: \Person.fullName) private var people: [Person]
     @Query(sort: \Place.name) private var places: [Place]
     @Query private var events: [TimelineEvent]
+    @Query private var settingsRows: [AppSettings]
 
     @State private var draft = MemoryDraft()
     @State private var pickerItem: PhotosPickerItem?
@@ -28,6 +29,9 @@ struct MemoryEditorView: View {
     @State private var importingDocument = false
     @State private var isSaving = false
     @State private var didLoad = false
+    @State private var transcribing = false
+    @State private var transcriptError: String?
+    @State private var existingAudioURL: URL?
 
     private var existing: Memory? {
         guard let memoryID else { return nil }
@@ -59,6 +63,18 @@ struct MemoryEditorView: View {
                     Text("Optional. Audio can also be transcribed on this iPhone — never in the cloud.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                    if transcribeURL != nil {
+                        Button {
+                            Task { await transcribeDraft() }
+                        } label: {
+                            if transcribing {
+                                Label("Transcribing on device…", systemImage: "waveform")
+                            } else {
+                                Label(draft.body.isEmpty ? "Transcribe on this iPhone" : "Re-transcribe on this iPhone", systemImage: "text.badge.waveform")
+                            }
+                        }
+                        .disabled(transcribing)
+                    }
                 }
 
                 Section("People") {
@@ -142,6 +158,17 @@ struct MemoryEditorView: View {
                     draft.documentURL = url
                     draft.removeMedia = false
                 }
+            }
+            .alert("Couldn’t transcribe", isPresented: Binding(
+                get: { transcriptError != nil },
+                set: { if !$0 { transcriptError = nil } }
+            )) {
+                Button("OK", role: .cancel) { transcriptError = nil }
+            } message: {
+                Text(transcriptError ?? "")
+            }
+            .task(id: existing?.mediaIDs.first) {
+                await loadExistingAudio()
             }
         }
     }
@@ -288,6 +315,33 @@ struct MemoryEditorView: View {
         isSaving = false
         if id != nil {
             dismiss()
+        }
+    }
+
+    private var transcribeURL: URL? {
+        if recorder.isRecording == false, let url = recorder.recordedURL { return url }
+        if let url = draft.audioURL { return url }
+        return existingAudioURL
+    }
+
+    private func loadExistingAudio() async {
+        guard let existing, existing.kind.isHearable || existing.kind == .audio,
+              let mediaID = existing.mediaIDs.first else {
+            existingAudioURL = nil
+            return
+        }
+        existingAudioURL = await session.mediaFileURL(for: mediaID)
+    }
+
+    private func transcribeDraft() async {
+        guard let transcribeURL else { return }
+        transcribing = true
+        defer { transcribing = false }
+        let locale = settingsRows.first?.localeKinship == .en ? "en-US" : "vi-VN"
+        do {
+            draft.body = try await SpeechTranscriptService.transcribe(url: transcribeURL, localeIdentifier: locale)
+        } catch {
+            transcriptError = error.localizedDescription
         }
     }
 

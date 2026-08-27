@@ -1,5 +1,6 @@
 import HeritageAtlasCore
 import SwiftUI
+import UIKit
 
 struct FeaturedMomentsView: View {
     let snapshot: WatchSnapshot
@@ -39,6 +40,16 @@ struct FeaturedMomentsView: View {
                 .foregroundStyle(.secondary)
             Text(memory.title)
                 .font(.headline)
+            if let jpeg = memory.thumbnailJPEG, let image = UIImage(data: jpeg) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxHeight: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            }
+            if let audio = memory.audioPreview, audio.isEmpty == false {
+                WatchClipPlayer(data: audio)
+            }
             if let name = memory.personName, name.isEmpty == false {
                 Text(name)
                     .font(.caption)

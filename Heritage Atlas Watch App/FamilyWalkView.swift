@@ -30,18 +30,26 @@ struct FamilyWalkView: View {
         FamilyWalkNavigator.progress(stopIDs: walk?.stopIDs ?? stops.map(\.id), distances: distances)
     }
 
+    private var herePlace: WatchPlace? {
+        guard let id = progress.hereStopID else { return nil }
+        return stops.first { $0.id == id }
+    }
+
     private var currentPlace: WatchPlace? {
         guard let id = progress.currentStopID else { return nil }
         return stops.first { $0.id == id }
     }
 
     private var nextPlace: WatchPlace? {
-        guard let id = progress.nextStopID else { return nil }
+        guard let id = progress.upcomingStopID else { return nil }
         return stops.first { $0.id == id }
     }
 
     private var currentStory: WatchMemory? {
-        WatchSnapshotExplorer.walkMemory(for: progress.currentStopID, in: snapshot)
+        WatchSnapshotExplorer.walkMemory(
+            for: progress.hereStopID ?? progress.currentStopID,
+            in: snapshot
+        )
     }
 
     var body: some View {
@@ -61,6 +69,10 @@ struct FamilyWalkView: View {
                     if progress.isComplete {
                         Text(isVI ? "Đã đến mọi điểm" : "You reached every stop")
                             .foregroundStyle(.secondary)
+                    } else if let herePlace {
+                        Text(isVI ? "Bạn đang ở đây" : "You’re here")
+                            .font(.headline)
+                        currentStopCard(herePlace)
                     } else if let currentPlace {
                         currentStopCard(currentPlace)
                     }
@@ -74,6 +86,9 @@ struct FamilyWalkView: View {
                                 Text(preview)
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
+                            }
+                            if let audio = story.audioPreview, audio.isEmpty == false {
+                                WatchClipPlayer(data: audio)
                             }
                         }
                     }
@@ -100,13 +115,21 @@ struct FamilyWalkView: View {
                                         .font(.caption.weight(.bold))
                                     Text(place.name)
                                     Spacer()
-                                    if state.isArrived {
-                                        Image(systemName: "checkmark")
+                                    if progress.hereStopID == state.placeID {
+                                        Text(isVI ? "Ở đây" : "Here")
+                                            .font(.caption2)
                                             .foregroundStyle(.green)
-                                    } else if state.isCurrent {
+                                    } else if state.placeID == progress.upcomingStopID {
+                                        Text(isVI ? "Tiếp" : "Next")
+                                            .font(.caption2)
+                                            .foregroundStyle(.secondary)
+                                    } else if state.isCurrent, progress.youAreHere == false {
                                         Text(isVI ? "Hiện tại" : "Now")
                                             .font(.caption2)
                                             .foregroundStyle(.secondary)
+                                    } else if state.isArrived {
+                                        Image(systemName: "checkmark")
+                                            .foregroundStyle(.green)
                                     }
                                 }
                             }
@@ -151,8 +174,8 @@ struct FamilyWalkView: View {
     }
 
     private func fireHaptics() {
-        guard let currentID = progress.currentStopID, let meters = distances[currentID] else { return }
-        for event in hapticTracker.events(for: [currentID: meters]) {
+        guard distances.isEmpty == false else { return }
+        for event in hapticTracker.events(for: distances) {
             WatchApproachHaptics.play(event.band)
         }
     }

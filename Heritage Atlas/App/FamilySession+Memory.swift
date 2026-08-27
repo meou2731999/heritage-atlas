@@ -84,7 +84,7 @@ extension FamilySession {
     }
 
     func mediaFileURL(for mediaID: UUID) async -> URL {
-        await mediaStore.url(for: mediaID, relativePath: mediaPathByID[mediaID])
+        mediaStore.url(for: mediaID, relativePath: mediaPathByID[mediaID])
     }
 
     func mediaData(for mediaID: UUID) async -> Data? {
@@ -175,7 +175,7 @@ extension FamilySession {
         do {
             let ext = fileURL.pathExtension.isEmpty ? "m4a" : fileURL.pathExtension
             let write = try await mediaStore.importFile(from: fileURL, fileExtension: ext)
-            let storedURL = await mediaStore.url(for: write.id, relativePath: write.relativePath)
+            let storedURL = mediaStore.url(for: write.id, relativePath: write.relativePath)
             let ref = MediaRef(
                 id: write.id,
                 kind: .audio,
@@ -322,7 +322,7 @@ extension FamilySession {
             }
             let ext = url.pathExtension.isEmpty ? (kind == .audio ? "m4a" : "bin") : url.pathExtension
             let write = try await mediaStore.importFile(from: url, fileExtension: ext)
-            let storedURL = await mediaStore.url(for: write.id, relativePath: write.relativePath)
+            let storedURL = mediaStore.url(for: write.id, relativePath: write.relativePath)
             let ref = MediaRef(
                 id: write.id,
                 kind: kind,

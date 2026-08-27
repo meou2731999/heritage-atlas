@@ -221,6 +221,10 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
     public var personName: String?
     public var bodyPreview: String?
     public var placeID: UUID?
+    /// Compact JPEG for Watch glance. Optional so older snapshots still decode.
+    public var thumbnailJPEG: Data?
+    /// Short audio clip for Watch glance. Optional so older snapshots still decode.
+    public var audioPreview: Data?
 
     public init(
         id: UUID,
@@ -233,7 +237,9 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
         occurredOn: Date? = nil,
         personName: String? = nil,
         bodyPreview: String? = nil,
-        placeID: UUID? = nil
+        placeID: UUID? = nil,
+        thumbnailJPEG: Data? = nil,
+        audioPreview: Data? = nil
     ) {
         self.id = id
         self.personID = personID
@@ -246,6 +252,8 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
         self.personName = personName
         self.bodyPreview = bodyPreview
         self.placeID = placeID
+        self.thumbnailJPEG = thumbnailJPEG
+        self.audioPreview = audioPreview
     }
 }
 

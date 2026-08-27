@@ -68,7 +68,8 @@ struct RootTabView: View {
                     )
                     await MemorialReminderScheduler.refresh(
                         events: FamilyCalendar.events(from: source),
-                        enabled: true
+                        enabled: true,
+                        locale: settings.localeKinship
                     )
                 }
             }

@@ -169,8 +169,19 @@ struct Phase4EngineTests {
             distances: [a: 10, b: 120, c: 800]
         )
         #expect(arrived.arrivedIDs.contains(a))
+        #expect(arrived.hereStopID == a)
+        #expect(arrived.youAreHere)
         #expect(arrived.currentStopID == b)
+        #expect(arrived.upcomingStopID == b)
         #expect(arrived.nextStopID == c)
+
+        let walking = FamilyWalkNavigator.progress(
+            stopIDs: [a, b, c],
+            distances: [a: 80, b: 400, c: 900]
+        )
+        #expect(walking.youAreHere == false)
+        #expect(walking.currentStopID == a)
+        #expect(walking.upcomingStopID == b)
 
         let done = FamilyWalkNavigator.progress(
             stopIDs: [a, b, c],

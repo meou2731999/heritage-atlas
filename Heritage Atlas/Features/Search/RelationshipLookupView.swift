@@ -89,21 +89,24 @@ struct RelationshipLookupView: View {
             let path = session.graph.shortestPath(from: fromID, to: toID)
             if let path {
                 let naming = KinshipNamer.name(path: path, graph: session.graph, locale: locale)
+                let fromIsMe = fromID == settings?.mePersonID
+                let fromName = fromPerson?.displayName ?? "A"
+                let toName = toPerson?.displayName ?? "B"
                 VStack(alignment: .leading, spacing: 12) {
                     Text(naming.term)
                         .font(.title3.weight(.semibold))
-                    Text(naming.pathExplanation)
+                    Text(naming.spokenPathExplanation(speakerIsUser: fromIsMe, speakerName: fromName))
                         .foregroundStyle(.secondary)
                     pathGlance(path)
                     HStack(alignment: .top, spacing: 16) {
                         callCard(
-                            title: "You call them",
-                            subtitle: fromPerson?.displayName ?? "A",
+                            title: fromIsMe ? "You call them" : "\(fromName) calls",
+                            subtitle: toName,
                             value: naming.youCallThem
                         )
                         callCard(
-                            title: "They call you",
-                            subtitle: toPerson?.displayName ?? "B",
+                            title: fromIsMe ? "They call you" : "\(toName) calls",
+                            subtitle: fromIsMe ? toName : fromName,
                             value: naming.theyCallYou
                         )
                     }

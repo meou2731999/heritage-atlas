@@ -20,6 +20,24 @@ public struct KinshipNaming: Sendable, Equatable, Codable {
         self.youCallThem = youCallThem
         self.theyCallYou = theyCallYou
     }
+
+    /// Path text is Me-centric (“Your father”, “bố của bạn”). For A→B lookup, substitute the speaker’s name.
+    public func spokenPathExplanation(speakerIsUser: Bool, speakerName: String) -> String {
+        if speakerIsUser { return pathExplanation }
+        let name = speakerName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard name.isEmpty == false else { return pathExplanation }
+        switch locale {
+        case .vi:
+            if pathExplanation == "Bạn" { return name }
+            return pathExplanation.replacingOccurrences(of: "của bạn", with: "của \(name)")
+        case .en:
+            if pathExplanation == "You" { return name }
+            if pathExplanation.hasPrefix("Your ") {
+                return "\(name)’s " + pathExplanation.dropFirst(5)
+            }
+            return pathExplanation
+        }
+    }
 }
 
 public enum KinshipNamer: Sendable {

@@ -160,13 +160,13 @@ struct PlaceDetailView: View {
                 Text("People")
             }
 
-            Section("Memories") {
-                let linked = MemoryQueries.forPlace(placeID, in: memories)
-                if linked.isEmpty {
+            let linkedMemories = MemoryQueries.forPlace(placeID, in: memories)
+            Section("Memories · \(linkedMemories.count)") {
+                if linkedMemories.isEmpty {
                     Text("No memories linked to this place yet.")
                         .foregroundStyle(.secondary)
                 } else {
-                    ForEach(linked) { memory in
+                    ForEach(linkedMemories) { memory in
                         NavigationLink {
                             MemoryDetailView(memoryID: memory.id)
                         } label: {

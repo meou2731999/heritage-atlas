@@ -6,7 +6,8 @@ public enum WatchSnapshotPackager {
     public static func pack(
         from context: ModelContext,
         cache: RelationshipCache,
-        mediaByID: [UUID: MediaRef] = [:]
+        mediaByID: [UUID: MediaRef] = [:],
+        loadMedia: ((UUID) -> Data?)? = nil
     ) throws -> WatchSnapshot {
         let settings = AppSettings.current(in: context)
         let people = try context.fetch(FetchDescriptor<Person>())
@@ -95,6 +96,17 @@ public enum WatchSnapshotPackager {
             let firstMedia = memory.mediaIDs.first.flatMap { mediaByID[$0] }
             let personID = memory.personIDs.first
             let preview = memory.body.trimmingCharacters(in: .whitespacesAndNewlines)
+            let bytes = memory.mediaIDs.first.flatMap { loadMedia?($0) }
+            var thumbnailJPEG: Data?
+            var audioPreview: Data?
+            if let bytes {
+                if firstMedia?.kind == .photo || memory.kind == .photo {
+                    thumbnailJPEG = WatchMediaPreview.jpegThumbnail(from: bytes)
+                }
+                if firstMedia?.kind == .audio || memory.kind.isHearable {
+                    audioPreview = WatchMediaPreview.shortAudio(from: bytes)
+                }
+            }
             return WatchMemory(
                 id: memory.id,
                 personID: personID,
@@ -109,7 +121,9 @@ public enum WatchSnapshotPackager {
                     return person.fullName
                 },
                 bodyPreview: preview.isEmpty ? nil : String(preview.prefix(140)),
-                placeID: memory.placeIDs.first
+                placeID: memory.placeIDs.first,
+                thumbnailJPEG: thumbnailJPEG,
+                audioPreview: audioPreview
             )
         }
 

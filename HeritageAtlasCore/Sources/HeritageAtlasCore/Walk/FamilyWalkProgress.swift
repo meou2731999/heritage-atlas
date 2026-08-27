@@ -30,12 +30,21 @@ public struct FamilyWalkProgress: Sendable, Equatable {
     public var currentIndex: Int
     public var arrivedIDs: Set<UUID>
     public var isComplete: Bool
+    /// Stop the wearer is standing in (within arrived radius). Independent of the nav target.
+    public var hereStopID: UUID?
     public var stops: [FamilyWalkStopState]
 
-    public init(currentIndex: Int, arrivedIDs: Set<UUID>, isComplete: Bool, stops: [FamilyWalkStopState]) {
+    public init(
+        currentIndex: Int,
+        arrivedIDs: Set<UUID>,
+        isComplete: Bool,
+        hereStopID: UUID? = nil,
+        stops: [FamilyWalkStopState]
+    ) {
         self.currentIndex = currentIndex
         self.arrivedIDs = arrivedIDs
         self.isComplete = isComplete
+        self.hereStopID = hereStopID
         self.stops = stops
     }
 
@@ -49,6 +58,16 @@ public struct FamilyWalkProgress: Sendable, Equatable {
         guard stops.indices.contains(next) else { return nil }
         return stops[next].placeID
     }
+
+    public var youAreHere: Bool { hereStopID != nil }
+
+    /// Stop to walk to next: the nav target while standing here, otherwise the stop after current.
+    public var upcomingStopID: UUID? {
+        if let hereStopID, currentStopID != hereStopID {
+            return currentStopID
+        }
+        return nextStopID
+    }
 }
 
 public enum FamilyWalkNavigator: Sendable {
@@ -60,27 +79,30 @@ public enum FamilyWalkNavigator: Sendable {
         arrivedRadiusMeters: Double = arrivedRadiusMeters
     ) -> FamilyWalkProgress {
         guard stopIDs.isEmpty == false else {
-            return FamilyWalkProgress(currentIndex: 0, arrivedIDs: [], isComplete: true, stops: [])
+            return FamilyWalkProgress(currentIndex: 0, arrivedIDs: [], isComplete: true, hereStopID: nil, stops: [])
         }
 
         var arrived: Set<UUID> = []
-        var currentIndex = stopIDs.count - 1
-        var foundCurrent = false
+        var hereIndex: Int?
+        var firstUnarrived: Int?
         for (index, id) in stopIDs.enumerated() {
             let meters = distances[id]
             let isArrived = meters.map { $0 <= arrivedRadiusMeters } ?? false
             if isArrived {
                 arrived.insert(id)
-            }
-            if foundCurrent == false, isArrived == false {
-                currentIndex = index
-                foundCurrent = true
+                hereIndex = index
+            } else if firstUnarrived == nil {
+                firstUnarrived = index
             }
         }
         let complete = arrived.count == stopIDs.count
+        let currentIndex: Int
         if complete {
             currentIndex = stopIDs.count - 1
+        } else {
+            currentIndex = firstUnarrived ?? (stopIDs.count - 1)
         }
+        let hereStopID = hereIndex.map { stopIDs[$0] }
 
         let stops = stopIDs.enumerated().map { index, id in
             FamilyWalkStopState(
@@ -96,6 +118,7 @@ public enum FamilyWalkNavigator: Sendable {
             currentIndex: currentIndex,
             arrivedIDs: arrived,
             isComplete: complete,
+            hereStopID: hereStopID,
             stops: stops
         )
     }

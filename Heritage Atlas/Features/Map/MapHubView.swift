@@ -171,9 +171,15 @@ struct FamilyMapCanvas: View {
                 )
             }
             let pin = cluster.memberIDs.first.flatMap { pinsByID[$0] }
+            let title: String
+            if let pin {
+                title = pin.memoryCount == 0 ? pin.name : "\(pin.name) · \(pin.memoryCount)"
+            } else {
+                title = "Place"
+            }
             return MapGlyph(
                 id: pin?.id.uuidString ?? cluster.id,
-                title: pin?.name ?? "Place",
+                title: title,
                 coordinate: pin?.coordinate ?? CLLocationCoordinate2D(
                     latitude: cluster.coordinate.latitude,
                     longitude: cluster.coordinate.longitude
@@ -285,6 +291,8 @@ private struct PlaceCalloutView: View {
             Section {
                 Label(pin.name, systemImage: pin.primaryRole.systemImageName)
                 Text(pin.roles.map(\.displayName).joined(separator: " · "))
+                    .foregroundStyle(.secondary)
+                Text("\(pin.personIDs.count) people · \(pin.memoryCount) \(pin.memoryCount == 1 ? "memory" : "memories")")
                     .foregroundStyle(.secondary)
             }
             Section("People") {
