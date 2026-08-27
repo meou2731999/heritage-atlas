@@ -69,10 +69,18 @@ struct WatchHomeView: View {
                 } label: {
                     Label(snapshot.localeKinship == .vi ? "Kỷ niệm" : "Moments", systemImage: "star.fill")
                 }
-                laterRow(
-                    title: snapshot.localeKinship == .vi ? "Hôm nay" : "Today",
-                    systemImage: "calendar"
-                )
+                NavigationLink {
+                    TodayView(snapshot: snapshot)
+                } label: {
+                    Label(snapshot.localeKinship == .vi ? "Hôm nay" : "Today", systemImage: "calendar")
+                }
+                if snapshot.currentWalk != nil {
+                    NavigationLink {
+                        FamilyWalkView(snapshot: snapshot)
+                    } label: {
+                        Label(snapshot.localeKinship == .vi ? "Family Walk" : "Family Walk", systemImage: "figure.walk")
+                    }
+                }
             } footer: {
                 Text(memoriesFooter)
             }
@@ -81,8 +89,16 @@ struct WatchHomeView: View {
     }
 
     private var familyFooter: String {
+        let living = snapshot.insightsGlance?.livingCount ?? familyCount
+        let generations = snapshot.insightsGlance?.generationCount
         if snapshot.localeKinship == .vi {
+            if let generations {
+                return "\(living) còn sống · \(generations) thế hệ · cache từ iPhone"
+            }
             return "\(familyCount) người · cache từ iPhone"
+        }
+        if let generations {
+            return "\(living) living · \(generations) gen · from iPhone"
         }
         return "\(familyCount) people · from iPhone"
     }
@@ -99,22 +115,17 @@ struct WatchHomeView: View {
     private var memoriesFooter: String {
         let featured = snapshot.featuredMemories.count
         let moments = WatchSnapshotExplorer.timelineMoments(in: snapshot).count
+        let today = WatchSnapshotExplorer.todayEvents(in: snapshot).count
         if snapshot.localeKinship == .vi {
-            return "\(featured) nổi bật · \(moments) khoảnh khắc · ghi về iPhone. Hôm nay sẽ có ở phase sau."
+            if snapshot.memorialRemindersEnabled == true {
+                return "\(featured) nổi bật · \(moments) khoảnh khắc · \(today) hôm nay"
+            }
+            return "\(featured) nổi bật · \(moments) khoảnh khắc. Bật nhắc giỗ trên iPhone để có Hôm nay."
         }
-        return "\(featured) featured · \(moments) moments · recordings go to iPhone. Today comes in a later phase."
-    }
-
-    private func laterRow(title: String, systemImage: String) -> some View {
-        HStack {
-            Label(title, systemImage: systemImage)
-            Spacer()
-            Text(snapshot.localeKinship == .vi ? "Sau" : "Soon")
-                .font(.caption2)
-                .foregroundStyle(.tertiary)
+        if snapshot.memorialRemindersEnabled == true {
+            return "\(featured) featured · \(moments) moments · \(today) today"
         }
-        .foregroundStyle(.tertiary)
-        .disabled(true)
+        return "\(featured) featured · \(moments) moments. Opt in to memorials on iPhone for Today."
     }
 }
 

@@ -124,6 +124,11 @@ final class FamilySession {
                 memory.placeIDs.removeAll { $0 == placeID }
             }
         }
+        if let walks = try? context.fetch(FetchDescriptor<FamilyWalk>()) {
+            for walk in walks {
+                walk.stopIDs.removeAll { $0 == placeID }
+            }
+        }
         context.delete(place)
         persistDataChange(context: context)
     }

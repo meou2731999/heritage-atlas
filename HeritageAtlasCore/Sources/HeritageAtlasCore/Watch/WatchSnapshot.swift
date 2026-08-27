@@ -17,6 +17,10 @@ public struct WatchSnapshot: Codable, Sendable, Equatable {
     public var featuredMemories: [WatchMemory]
     /// A few important life moments for swipe-glance. Optional so older snapshots still decode.
     public var timelineMoments: [WatchTimelineMoment]?
+    /// Packed only when memorial reminders are opted in. Watch filters to today's month/day.
+    public var todayEvents: [WatchCalendarEvent]?
+    public var insightsGlance: WatchInsightsGlance?
+    public var memorialRemindersEnabled: Bool?
 
     public init(
         generatedAt: Date = Date(),
@@ -31,7 +35,10 @@ public struct WatchSnapshot: Codable, Sendable, Equatable {
         cemeteryPins: [WatchPlace] = [],
         currentWalk: WatchFamilyWalk? = nil,
         featuredMemories: [WatchMemory] = [],
-        timelineMoments: [WatchTimelineMoment]? = nil
+        timelineMoments: [WatchTimelineMoment]? = nil,
+        todayEvents: [WatchCalendarEvent]? = nil,
+        insightsGlance: WatchInsightsGlance? = nil,
+        memorialRemindersEnabled: Bool? = nil
     ) {
         self.generatedAt = generatedAt
         self.mePersonID = mePersonID
@@ -46,6 +53,50 @@ public struct WatchSnapshot: Codable, Sendable, Equatable {
         self.currentWalk = currentWalk
         self.featuredMemories = featuredMemories
         self.timelineMoments = timelineMoments
+        self.todayEvents = todayEvents
+        self.insightsGlance = insightsGlance
+        self.memorialRemindersEnabled = memorialRemindersEnabled
+    }
+}
+
+public struct WatchInsightsGlance: Codable, Sendable, Equatable {
+    public var livingCount: Int
+    public var generationCount: Int
+
+    public init(livingCount: Int, generationCount: Int) {
+        self.livingCount = livingCount
+        self.generationCount = generationCount
+    }
+}
+
+public struct WatchCalendarEvent: Codable, Sendable, Equatable, Identifiable {
+    public var id: UUID
+    public var kind: FamilyCalendarKind
+    public var personID: UUID?
+    public var personName: String
+    public var title: String
+    public var month: Int
+    public var day: Int
+    public var years: Int?
+
+    public init(
+        id: UUID,
+        kind: FamilyCalendarKind,
+        personID: UUID? = nil,
+        personName: String,
+        title: String,
+        month: Int,
+        day: Int,
+        years: Int? = nil
+    ) {
+        self.id = id
+        self.kind = kind
+        self.personID = personID
+        self.personName = personName
+        self.title = title
+        self.month = month
+        self.day = day
+        self.years = years
     }
 }
 
@@ -138,11 +189,23 @@ public struct WatchFamilyWalk: Codable, Sendable, Equatable, Identifiable {
     public var id: UUID
     public var title: String
     public var stopIDs: [UUID]
+    /// Resolved places in walk order. Optional so older snapshots still decode.
+    public var stops: [WatchPlace]?
+    /// One story or memory per stop when iPhone had one linked.
+    public var stopMemories: [WatchMemory]?
 
-    public init(id: UUID, title: String, stopIDs: [UUID]) {
+    public init(
+        id: UUID,
+        title: String,
+        stopIDs: [UUID],
+        stops: [WatchPlace]? = nil,
+        stopMemories: [WatchMemory]? = nil
+    ) {
         self.id = id
         self.title = title
         self.stopIDs = stopIDs
+        self.stops = stops
+        self.stopMemories = stopMemories
     }
 }
 
@@ -157,6 +220,7 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
     public var occurredOn: Date?
     public var personName: String?
     public var bodyPreview: String?
+    public var placeID: UUID?
 
     public init(
         id: UUID,
@@ -168,7 +232,8 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
         durationSeconds: Double? = nil,
         occurredOn: Date? = nil,
         personName: String? = nil,
-        bodyPreview: String? = nil
+        bodyPreview: String? = nil,
+        placeID: UUID? = nil
     ) {
         self.id = id
         self.personID = personID
@@ -180,6 +245,7 @@ public struct WatchMemory: Codable, Sendable, Equatable, Identifiable {
         self.occurredOn = occurredOn
         self.personName = personName
         self.bodyPreview = bodyPreview
+        self.placeID = placeID
     }
 }
 

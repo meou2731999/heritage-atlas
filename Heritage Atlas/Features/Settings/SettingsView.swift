@@ -6,7 +6,11 @@ struct SettingsView: View {
     @Environment(FamilySession.self) private var session
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Person.fullName) private var people: [Person]
+    @Query(sort: \FamilyWalk.title) private var walks: [FamilyWalk]
     @Query private var settingsRows: [AppSettings]
+    @Query private var personPlaces: [PersonPlace]
+    @Query private var memories: [Memory]
+    @Query private var events: [TimelineEvent]
 
     @State private var path = NavigationPath()
     @State private var pickingMe = false
@@ -17,6 +21,11 @@ struct SettingsView: View {
     private var me: Person? {
         guard let id = settings?.mePersonID else { return nil }
         return people.first { $0.id == id }
+    }
+
+    private var currentWalkTitle: String {
+        guard let id = settings?.currentFamilyWalkID else { return "None" }
+        return walks.first { $0.id == id }?.title ?? "None"
     }
 
     var body: some View {
@@ -60,6 +69,47 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Toggle("Memorial reminders", isOn: Binding(
+                        get: { settings?.memorialRemindersEnabled ?? false },
+                        set: { enabled in
+                            session.setMemorialRemindersEnabled(enabled, context: modelContext)
+                            Task {
+                                let source = FamilyCalendarSourceBuilder.make(
+                                    people: people,
+                                    personPlaces: personPlaces,
+                                    memories: memories,
+                                    events: events,
+                                    locale: settings?.localeKinship ?? .en
+                                )
+                                await MemorialReminderScheduler.refresh(
+                                    events: FamilyCalendar.events(from: source),
+                                    enabled: enabled
+                                )
+                            }
+                        }
+                    ))
+                    NavigationLink {
+                        MemorialCalendarView()
+                    } label: {
+                        Text("Family calendar")
+                    }
+                    NavigationLink {
+                        FamilyWalkListView()
+                    } label: {
+                        HStack {
+                            Text("Family Walk")
+                            Spacer()
+                            Text(currentWalkTitle)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                } header: {
+                    Text("Today & Walk")
+                } footer: {
+                    Text("Reminders are off until you opt in. Watch Today and local notifications use this switch — they never require iCloud.")
+                }
+
+                Section {
                     HStack {
                         Text("iCloud")
                         Spacer()
@@ -87,7 +137,7 @@ struct SettingsView: View {
                     Button("Load sample family") {
                         confirmSeed = true
                     }
-                    Text("Adds a three-generation demo family with homes, schools, burial pins, stories, and a life timeline so you can try the tree, map, and Watch glances. Not loaded automatically.")
+                    Text("Adds a three-generation demo family with homes, schools, burial pins, stories, a life timeline, and a Family Walk so you can try the tree, map, Watch glances, and walk. Not loaded automatically.")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 } header: {

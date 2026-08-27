@@ -78,6 +78,31 @@ enum WatchSnapshotExplorer {
         snapshot.featuredMemories.first { $0.personID == personID }
     }
 
+    static func walkStops(in snapshot: WatchSnapshot) -> [WatchPlace] {
+        guard let walk = snapshot.currentWalk else { return [] }
+        if let stops = walk.stops, stops.isEmpty == false {
+            return stops
+        }
+        let byID = Dictionary(uniqueKeysWithValues: snapshot.nearbyPlaces.map { ($0.id, $0) })
+        return walk.stopIDs.compactMap { byID[$0] }
+    }
+
+    static func walkMemory(for placeID: UUID?, in snapshot: WatchSnapshot) -> WatchMemory? {
+        guard let placeID else { return nil }
+        if let packed = snapshot.currentWalk?.stopMemories?.first(where: { $0.placeID == placeID }) {
+            return packed
+        }
+        return snapshot.featuredMemories.first { $0.placeID == placeID }
+    }
+
+    static func todayEvents(in snapshot: WatchSnapshot, now: Date = Date()) -> [WatchCalendarEvent] {
+        guard snapshot.memorialRemindersEnabled == true else { return [] }
+        let calendar = Calendar(identifier: .gregorian)
+        let month = calendar.component(.month, from: now)
+        let day = calendar.component(.day, from: now)
+        return (snapshot.todayEvents ?? []).filter { $0.month == month && $0.day == day }
+    }
+
     static func timelineMoments(for personID: UUID, in snapshot: WatchSnapshot) -> [WatchTimelineMoment] {
         timelineMoments(in: snapshot).filter { $0.personID == personID }
     }
@@ -217,6 +242,27 @@ enum WatchSnapshotExplorer {
                     personIDs: [grandfatherID]
                 ),
             ],
+            currentWalk: WatchFamilyWalk(
+                id: UUID(uuidString: "00000000-0000-4000-8000-000000000401")!,
+                title: "Huế to Hà Nội",
+                stopIDs: [
+                    UUID(uuidString: "00000000-0000-4000-8000-000000000103")!,
+                    UUID(uuidString: "00000000-0000-4000-8000-000000000101")!,
+                    UUID(uuidString: "00000000-0000-4000-8000-000000000102")!,
+                ],
+                stops: nil,
+                stopMemories: [
+                    WatchMemory(
+                        id: UUID(uuidString: "00000000-0000-4000-8000-000000000201")!,
+                        personID: grandfatherID,
+                        title: "Ông Nội kể chuyện Huế",
+                        kind: .story,
+                        personName: "Ông Nội",
+                        bodyPreview: "Sông Hương lúc sương sớm.",
+                        placeID: UUID(uuidString: "00000000-0000-4000-8000-000000000103")!
+                    )
+                ]
+            ),
             featuredMemories: [
                 WatchMemory(
                     id: UUID(uuidString: "00000000-0000-4000-8000-000000000201")!,
@@ -247,7 +293,21 @@ enum WatchSnapshotExplorer {
                     kind: .married,
                     placeName: "Thủy Tạ"
                 ),
-            ]
+            ],
+            todayEvents: [
+                WatchCalendarEvent(
+                    id: UUID(uuidString: "00000000-0000-4000-8000-000000000501")!,
+                    kind: .birthday,
+                    personID: meID,
+                    personName: "Quân",
+                    title: "Quân",
+                    month: 8,
+                    day: 27,
+                    years: 31
+                )
+            ],
+            insightsGlance: WatchInsightsGlance(livingCount: 3, generationCount: 3),
+            memorialRemindersEnabled: true
         )
     }
 

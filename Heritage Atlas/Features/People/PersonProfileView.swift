@@ -143,6 +143,8 @@ struct PersonProfileView: View {
 
             placesSection(person)
 
+            memorialSection(person)
+
             memorySection(person)
 
             relativesSection(person)
@@ -254,6 +256,36 @@ struct PersonProfileView: View {
             }
         } header: {
             Text("Places")
+        }
+    }
+
+    @ViewBuilder
+    private func memorialSection(_ person: Person) -> some View {
+        let links = personPlaces.filter { $0.person?.id == person.id }
+        let burial = links.first { $0.role == .burial }
+        let linked = MemoryQueries.forPerson(person.id, in: memories)
+        let stories = linked.filter { $0.kind == .story }
+        if person.isLiving == false || burial != nil {
+            Section("Memorial") {
+                if let death = PersonLifeSpan.longDate(person.deathDate) {
+                    detailRow("Giỗ", death)
+                }
+                if let burial, let place = burial.place {
+                    NavigationLink {
+                        PlaceDetailView(placeID: place.id)
+                    } label: {
+                        PlaceRowView(place: place, subtitle: "Burial", role: .burial)
+                    }
+                }
+                detailRow("Remembered by", linked.isEmpty ? "No memories yet" : "\(linked.count) memories · \(stories.count) stories")
+                if stories.isEmpty {
+                    NavigationLink {
+                        MemoryGapView()
+                    } label: {
+                        Label("Record a story", systemImage: "mic")
+                    }
+                }
+            }
         }
     }
 

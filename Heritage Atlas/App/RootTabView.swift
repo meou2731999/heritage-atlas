@@ -52,6 +52,25 @@ struct RootTabView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 session.refresh(context: modelContext)
+                Task {
+                    let settings = AppSettings.current(in: modelContext)
+                    guard settings.memorialRemindersEnabled else { return }
+                    let people = (try? modelContext.fetch(FetchDescriptor<Person>())) ?? []
+                    let personPlaces = (try? modelContext.fetch(FetchDescriptor<PersonPlace>())) ?? []
+                    let memories = (try? modelContext.fetch(FetchDescriptor<Memory>())) ?? []
+                    let events = (try? modelContext.fetch(FetchDescriptor<TimelineEvent>())) ?? []
+                    let source = FamilyCalendarSourceBuilder.make(
+                        people: people,
+                        personPlaces: personPlaces,
+                        memories: memories,
+                        events: events,
+                        locale: settings.localeKinship
+                    )
+                    await MemorialReminderScheduler.refresh(
+                        events: FamilyCalendar.events(from: source),
+                        enabled: true
+                    )
+                }
             }
         }
     }

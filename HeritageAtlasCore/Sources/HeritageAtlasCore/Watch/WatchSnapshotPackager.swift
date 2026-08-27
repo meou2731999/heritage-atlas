@@ -88,22 +88,10 @@ public enum WatchSnapshotPackager {
         burialPlaces.sort { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
         cemeteryPins.sort { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
 
-        var currentWalk: WatchFamilyWalk?
-        if let walkID = settings.currentFamilyWalkID {
-            let walks = try context.fetch(FetchDescriptor<FamilyWalk>())
-            if let walk = walks.first(where: { $0.id == walkID }) {
-                currentWalk = WatchFamilyWalk(id: walk.id, title: walk.title, stopIDs: walk.stopIDs)
-            }
-        }
-
         let memories = try context.fetch(FetchDescriptor<Memory>())
         let events = try context.fetch(FetchDescriptor<TimelineEvent>())
-        let selectedMemories = WatchFeaturedMoments.selectFeaturedMemories(
-            memories: memories,
-            favoritePersonIDs: favoriteIDs,
-            mePersonID: settings.mePersonID
-        )
-        let featured = selectedMemories.map { memory in
+
+        func watchMemory(from memory: Memory) -> WatchMemory {
             let firstMedia = memory.mediaIDs.first.flatMap { mediaByID[$0] }
             let personID = memory.personIDs.first
             let preview = memory.body.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -120,9 +108,58 @@ public enum WatchSnapshotPackager {
                     if let nickname = person.nickname, nickname.isEmpty == false { return nickname }
                     return person.fullName
                 },
-                bodyPreview: preview.isEmpty ? nil : String(preview.prefix(140))
+                bodyPreview: preview.isEmpty ? nil : String(preview.prefix(140)),
+                placeID: memory.placeIDs.first
             )
         }
+
+        var currentWalk: WatchFamilyWalk?
+        if let walkID = settings.currentFamilyWalkID {
+            let walks = try context.fetch(FetchDescriptor<FamilyWalk>())
+            if let walk = walks.first(where: { $0.id == walkID }) {
+                let placeByID = Dictionary(uniqueKeysWithValues: places.map { ($0.id, $0) })
+                let walkStops: [WatchPlace] = walk.stopIDs.compactMap { stopID in
+                    nearbyPlaces.first { $0.id == stopID } ?? placeByID[stopID].map { place in
+                        let links = linksByPlaceID[place.id] ?? []
+                        return WatchPlace(
+                            id: place.id,
+                            name: place.name,
+                            latitude: place.latitude,
+                            longitude: place.longitude,
+                            role: primaryRole(in: links),
+                            personIDs: uniqued(links.compactMap { $0.person?.id })
+                        )
+                    }
+                }
+                let stopMemories: [WatchMemory] = walk.stopIDs.compactMap { stopID in
+                    let linked = memories.filter { $0.placeIDs.contains(stopID) }
+                    let ranked = linked.sorted { lhs, rhs in
+                        func score(_ memory: Memory) -> Int {
+                            if memory.isFeatured { return 3 }
+                            if memory.kind.isHearable { return 2 }
+                            return 1
+                        }
+                        if score(lhs) != score(rhs) { return score(lhs) > score(rhs) }
+                        return (lhs.occurredOn ?? .distantPast) > (rhs.occurredOn ?? .distantPast)
+                    }
+                    return ranked.first.map(watchMemory)
+                }
+                currentWalk = WatchFamilyWalk(
+                    id: walk.id,
+                    title: walk.title,
+                    stopIDs: walk.stopIDs,
+                    stops: walkStops,
+                    stopMemories: stopMemories
+                )
+            }
+        }
+
+        let selectedMemories = WatchFeaturedMoments.selectFeaturedMemories(
+            memories: memories,
+            favoritePersonIDs: favoriteIDs,
+            mePersonID: settings.mePersonID
+        )
+        let featured = selectedMemories.map(watchMemory)
 
         let timelineMoments = WatchFeaturedMoments.selectTimelineMoments(
             events: events,
@@ -132,6 +169,29 @@ public enum WatchSnapshotPackager {
             mePersonID: settings.mePersonID,
             locale: settings.localeKinship
         )
+
+        let graph = try RelationshipGraphBuilder.make(from: context)
+        let insights = FamilyInsightsEngine.compute(
+            people: Array(graph.people.values),
+            graph: graph,
+            mePersonID: settings.mePersonID,
+            placeCount: places.count,
+            burialCount: burialPlaces.count,
+            memoryCount: memories.count,
+            storyCount: memories.filter { $0.kind == .story }.count
+        )
+
+        var todayEvents: [WatchCalendarEvent]?
+        if settings.memorialRemindersEnabled {
+            let calendarSource = FamilyCalendarSourceBuilder.make(
+                people: people,
+                personPlaces: personPlaces,
+                memories: memories,
+                events: events,
+                locale: settings.localeKinship
+            )
+            todayEvents = FamilyCalendar.events(from: calendarSource).map(\.watchEvent)
+        }
 
         return WatchSnapshot(
             generatedAt: Date(),
@@ -146,7 +206,10 @@ public enum WatchSnapshotPackager {
             cemeteryPins: cemeteryPins,
             currentWalk: currentWalk,
             featuredMemories: featured,
-            timelineMoments: timelineMoments
+            timelineMoments: timelineMoments,
+            todayEvents: todayEvents,
+            insightsGlance: insights.watchGlance,
+            memorialRemindersEnabled: settings.memorialRemindersEnabled
         )
     }
 

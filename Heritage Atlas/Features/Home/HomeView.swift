@@ -11,6 +11,8 @@ struct HomeView: View {
     @Query private var personPlaces: [PersonPlace]
     @Query private var settingsRows: [AppSettings]
     @Query private var memories: [Memory]
+    @Query private var walks: [FamilyWalk]
+    @Query private var events: [TimelineEvent]
 
     @State private var path = NavigationPath()
     @State private var editorMode: PersonEditorMode?
@@ -42,6 +44,7 @@ struct HomeView: View {
                     nearbySection
                     watchInboxSection
                     memoriesToHearSection
+                    discoverSection
                 }
                 .padding(20)
             }
@@ -357,6 +360,111 @@ struct HomeView: View {
                 }
             }
         }
+    }
+
+    private var discoverSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Explore")
+                .font(.headline)
+
+            nearbyCard {
+                if let event = upcomingEvents.first {
+                    NavigationLink {
+                        MemorialCalendarView()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(event.title)
+                                .font(.body.weight(.medium))
+                            Text(event.subtitle)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    Divider()
+                }
+
+                if memoryGap.coveragePercent < 100, let prompt = memoryGap.prompts.first {
+                    NavigationLink {
+                        MemoryGapView()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Memory Gap · \(memoryGap.coveragePercent)%")
+                                .font(.body.weight(.medium))
+                            Text(prompt.question)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(2)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    Divider()
+                }
+
+                NavigationLink {
+                    InsightsView()
+                } label: {
+                    Label("Insights · \(insights.livingCount) living · \(insights.generationCount) gen", systemImage: "chart.bar")
+                }
+                NavigationLink {
+                    FamilyWalkListView()
+                } label: {
+                    Label(walkLabel, systemImage: "figure.walk")
+                }
+                NavigationLink {
+                    MemorialCalendarView()
+                } label: {
+                    Label("Family calendar", systemImage: "calendar")
+                }
+                NavigationLink {
+                    ArchiveImportView()
+                } label: {
+                    Label("Family Archive · OCR", systemImage: "doc.text.viewfinder")
+                }
+            }
+        }
+    }
+
+    private var insights: FamilyInsights {
+        FamilyInsightsEngine.compute(
+            people: people.map { $0.asNode() },
+            graph: session.graph,
+            mePersonID: settings?.mePersonID,
+            placeCount: places.count,
+            burialCount: personPlaces.filter { $0.role == .burial }.count,
+            memoryCount: memories.count,
+            storyCount: memories.filter { $0.kind == .story }.count
+        )
+    }
+
+    private var memoryGap: MemoryGapReport {
+        MemoryGapAnalyzer.report(
+            people: FamilyCalendarSourceBuilder.memoryGapPeople(
+                people: people,
+                personPlaces: personPlaces,
+                memories: memories
+            ),
+            locale: settings?.localeKinship ?? .en
+        )
+    }
+
+    private var upcomingEvents: [FamilyCalendarEvent] {
+        let source = FamilyCalendarSourceBuilder.make(
+            people: people,
+            personPlaces: personPlaces,
+            memories: memories,
+            events: events,
+            locale: settings?.localeKinship ?? .en
+        )
+        return FamilyCalendar.upcoming(from: Date(), days: 21, in: FamilyCalendar.events(from: source))
+    }
+
+    private var walkLabel: String {
+        if let currentID = settings?.currentFamilyWalkID,
+           let walk = walks.first(where: { $0.id == currentID }) {
+            return "Family Walk · \(walk.title)"
+        }
+        return walks.isEmpty ? "Family Walk" : "Family Walk · \(walks.count)"
     }
 
     private func nearbyCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {

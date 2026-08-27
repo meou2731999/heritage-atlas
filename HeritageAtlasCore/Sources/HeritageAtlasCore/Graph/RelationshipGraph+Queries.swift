@@ -1,26 +1,27 @@
 import Foundation
-import HeritageAtlasCore
 
 extension RelationshipGraph {
-    func hops(from id: UUID, matching: (GraphHop) -> Bool) -> [PersonNode] {
-        (adjacency[id] ?? [])
-            .filter { matching($0.hop) }
-            .compactMap { people[$0.neighborID] }
+    public func hops(from id: UUID, matching: (GraphHop) -> Bool) -> [PersonNode] {
+        uniqueNodes(
+            (adjacency[id] ?? [])
+                .filter { matching($0.hop) }
+                .compactMap { people[$0.neighborID] }
+        )
     }
 
-    func parents(of id: UUID) -> [PersonNode] {
-        uniqueNodes(hops(from: id) { $0.axis == .up })
+    public func parents(of id: UUID) -> [PersonNode] {
+        hops(from: id) { $0.axis == .up }
     }
 
-    func children(of id: UUID) -> [PersonNode] {
-        uniqueNodes(hops(from: id) { $0.axis == .down })
+    public func children(of id: UUID) -> [PersonNode] {
+        hops(from: id) { $0.axis == .down }
     }
 
-    func spousesAndPartners(of id: UUID) -> [PersonNode] {
-        uniqueNodes(hops(from: id) { $0 == .spouse || $0 == .partner })
+    public func spousesAndPartners(of id: UUID) -> [PersonNode] {
+        hops(from: id) { $0 == .spouse || $0 == .partner }
     }
 
-    func siblings(of id: UUID) -> [PersonNode] {
+    public func siblings(of id: UUID) -> [PersonNode] {
         var result: [PersonNode] = []
         var seen: Set<UUID> = [id]
         for parent in parents(of: id) {
@@ -31,11 +32,26 @@ extension RelationshipGraph {
         return result
     }
 
-    func hop(from: UUID, to: UUID) -> GraphHop? {
+    public func hop(from: UUID, to: UUID) -> GraphHop? {
         adjacency[from]?.first { $0.neighborID == to }?.hop
     }
 
-    func sortedByBirth(_ nodes: [PersonNode]) -> [PersonNode] {
+    public func ancestors(of id: UUID) -> [PersonNode] {
+        var seen: Set<UUID> = [id]
+        var queue = parents(of: id)
+        var result: [PersonNode] = []
+        var index = 0
+        while index < queue.count {
+            let node = queue[index]
+            index += 1
+            if seen.insert(node.id).inserted == false { continue }
+            result.append(node)
+            queue.append(contentsOf: parents(of: node.id))
+        }
+        return result
+    }
+
+    public func sortedByBirth(_ nodes: [PersonNode]) -> [PersonNode] {
         nodes.sorted { lhs, rhs in
             switch (lhs.birthDate, rhs.birthDate) {
             case (let left?, let right?) where left != right:
@@ -50,7 +66,7 @@ extension RelationshipGraph {
         }
     }
 
-    func sortedParents(_ nodes: [PersonNode]) -> [PersonNode] {
+    public func sortedParents(_ nodes: [PersonNode]) -> [PersonNode] {
         nodes.sorted { lhs, rhs in
             let leftRank = genderRank(lhs.gender)
             let rightRank = genderRank(rhs.gender)
@@ -73,19 +89,13 @@ extension RelationshipGraph {
     }
 }
 
-enum FamilyMetrics {
-    static func generationCount(in graph: RelationshipGraph) -> Int {
-        guard !graph.people.isEmpty else { return 0 }
-
-        func parentIDs(of id: UUID) -> [UUID] {
-            graph.parents(of: id).map(\.id)
-        }
-        func childIDs(of id: UUID) -> [UUID] {
-            graph.children(of: id).map(\.id)
-        }
+public enum GenerationIndex: Sendable {
+    /// Generation 0 is the oldest parental generation (people with no parents in the graph).
+    public static func generations(in graph: RelationshipGraph) -> [UUID: Int] {
+        guard !graph.people.isEmpty else { return [:] }
 
         var generation: [UUID: Int] = [:]
-        var roots = graph.people.keys.filter { parentIDs(of: $0).isEmpty }
+        var roots = graph.people.keys.filter { graph.parents(of: $0).isEmpty }
         if roots.isEmpty {
             roots = Array(graph.people.keys)
         }
@@ -98,19 +108,30 @@ enum FamilyMetrics {
             let id = queue[index]
             index += 1
             let current = generation[id] ?? 0
-            for child in childIDs(of: id) {
+            for child in graph.children(of: id) {
                 let next = current + 1
-                if let existing = generation[child], existing >= next { continue }
-                generation[child] = next
-                queue.append(child)
+                if let existing = generation[child.id], existing >= next { continue }
+                generation[child.id] = next
+                queue.append(child.id)
             }
         }
         for id in graph.people.keys where generation[id] == nil {
             generation[id] = 0
         }
+        return generation
+    }
+
+    public static func count(in graph: RelationshipGraph) -> Int {
+        let generation = generations(in: graph)
         guard let minG = generation.values.min(), let maxG = generation.values.max() else {
-            return 1
+            return 0
         }
         return max(1, maxG - minG + 1)
+    }
+}
+
+public enum FamilyMetrics: Sendable {
+    public static func generationCount(in graph: RelationshipGraph) -> Int {
+        GenerationIndex.count(in: graph)
     }
 }

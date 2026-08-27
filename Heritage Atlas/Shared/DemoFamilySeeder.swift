@@ -192,12 +192,22 @@ enum DemoFamilySeeder {
         weddingStory.timelineEventID = fatherMarried.id
         hueStory.timelineEventID = movedHaNoi.id
 
+        let ancestralWalk = FamilyWalk(
+            title: "Huế to Hà Nội",
+            stopIDs: [nhaHue.id, damCuoi.id, nhaHaNoi.id, vanDien.id],
+            notes: "Childhood home, parents’ wedding, the Hà Nội house, then Văn Điển."
+        )
+        context.insert(ancestralWalk)
+
         let settings = AppSettings.current(in: context)
         if settings.mePersonID == nil {
             settings.mePersonID = me.id
         }
         settings.favoritePersonIDs = uniqued([me.id, father.id, ongNoi.id] + settings.favoritePersonIDs)
         settings.localeKinship = .vi
+        if settings.currentFamilyWalkID == nil {
+            settings.currentFamilyWalkID = ancestralWalk.id
+        }
         return me.id
     }
 

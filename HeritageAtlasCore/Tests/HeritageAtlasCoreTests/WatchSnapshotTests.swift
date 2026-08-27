@@ -103,6 +103,39 @@ struct WatchSnapshotTests {
         #expect(snapshot.featuredMemories.map(\.title) == ["Kitchen stories"])
         #expect(snapshot.featuredMemories.first?.personID == me.id)
         #expect(snapshot.timelineMoments?.contains { $0.kind == .born && $0.memoryTitle == "Kitchen stories" } == true)
+        #expect(snapshot.insightsGlance?.livingCount == 1)
+        #expect(snapshot.insightsGlance?.generationCount == 1)
+        #expect(snapshot.memorialRemindersEnabled == false)
+        #expect(snapshot.todayEvents == nil)
+    }
+
+    @Test @MainActor func packIncludesCurrentWalkStopsAndOptInCalendar() throws {
+        let phone = PersistenceController.makeInMemoryPhoneContainer()
+        let context = ModelContext(phone)
+        let me = Person(fullName: "Nguyễn Văn Quân", gender: .male, birthDate: Date())
+        context.insert(me)
+        let home = Place(name: "Nhà Hà Nội", latitude: 21.0285, longitude: 105.8542)
+        let hue = Place(name: "Nhà Huế", latitude: 16.4637, longitude: 107.5909)
+        context.insert(home)
+        context.insert(hue)
+        let walk = FamilyWalk(title: "Huế to Hà Nội", stopIDs: [hue.id, home.id])
+        context.insert(walk)
+        let settings = AppSettings.current(in: context)
+        settings.mePersonID = me.id
+        settings.currentFamilyWalkID = walk.id
+        settings.memorialRemindersEnabled = true
+        try context.save()
+
+        let graph = try RelationshipGraphBuilder.make(from: context)
+        let cache = RelationshipCache.rebuild(meID: me.id, graph: graph, locale: .vi)
+        let snapshot = try WatchSnapshotPackager.pack(from: context, cache: cache)
+
+        #expect(snapshot.currentWalk?.title == "Huế to Hà Nội")
+        #expect(snapshot.currentWalk?.stopIDs == [hue.id, home.id])
+        #expect(snapshot.currentWalk?.stops?.map(\.name) == ["Nhà Huế", "Nhà Hà Nội"])
+        #expect(snapshot.memorialRemindersEnabled == true)
+        #expect(snapshot.todayEvents != nil)
+        #expect(snapshot.insightsGlance?.livingCount == 1)
     }
 
     @Test func olderSnapshotsWithoutPeopleStillDecode() throws {
