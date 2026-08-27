@@ -1,17 +1,29 @@
-//
-//  Heritage_AtlasApp.swift
-//  Heritage Atlas
-//
-//  Created by Le Ba Quan on 27/8/26.
-//
-
+import HeritageAtlasCore
+import SwiftData
 import SwiftUI
 
 @main
 struct Heritage_AtlasApp: App {
+    let container: ModelContainer
+    @State private var session = FamilySession()
+    @State private var locationSession = DeviceLocationSession()
+
+    init() {
+        let container = PersistenceController.makePhoneContainer()
+        self.container = container
+        HeritageAtlasBootstrap.ensureSettings(in: container)
+        WatchConnectivityService.shared.activate()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootTabView()
+                .environment(session)
+                .environment(locationSession)
+                .onAppear {
+                    session.bindWatchConnectivity(container: container)
+                }
         }
+        .modelContainer(container)
     }
 }
