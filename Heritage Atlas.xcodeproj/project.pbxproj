@@ -12,6 +12,8 @@
 		CE8A2A15303F610000772DF7 /* HeritageAtlasCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE8A2A12303F610000772DF7 /* HeritageAtlasCore */; };
 		CE8A2A16303F610000772DF7 /* HeritageAtlasCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE8A2A13303F610000772DF7 /* HeritageAtlasCore */; };
 		CE8A2A17303F610000772DF7 /* HeritageAtlasCore in Frameworks */ = {isa = PBXBuildFile; productRef = CE8A2A18303F610000772DF7 /* HeritageAtlasCore */; };
+		CE8A2E953040978200772DF7 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE8A2E943040978200772DF7 /* AppIcon.icon */; };
+		CE8A2E963040978200772DF7 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = CE8A2E943040978200772DF7 /* AppIcon.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,7 @@
 		CE8A28DF303F5EF700772DF7 /* Heritage Atlas Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Heritage Atlas Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE8A28EE303F5EF800772DF7 /* Heritage Atlas Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage Atlas Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE8A28F8303F5EF800772DF7 /* Heritage Atlas Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Heritage Atlas Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8A2E943040978200772DF7 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -168,6 +171,7 @@
 				CE8A28F1303F5EF800772DF7 /* Heritage Atlas Watch AppTests */,
 				CE8A28FB303F5EF800772DF7 /* Heritage Atlas Watch AppUITests */,
 				CE8A28BD303F5EF600772DF7 /* Products */,
+				CE8A2E943040978200772DF7 /* AppIcon.icon */,
 			);
 			sourceTree = "<group>";
 		};
@@ -395,6 +399,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8A2E953040978200772DF7 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8A2E963040978200772DF7 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
