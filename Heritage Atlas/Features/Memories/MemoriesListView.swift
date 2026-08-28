@@ -75,18 +75,16 @@ struct MemoriesListView: View {
         }
     }
 
-    private var navigationTitle: String {
+    private var navigationTitle: LocalizedStringKey {
         if hearableOnly { return "Memories to hear" }
-        if personID != nil { return "Memories" }
-        if placeID != nil { return "Memories" }
         return "Memories"
     }
 
-    private var emptyTitle: String {
+    private var emptyTitle: LocalizedStringKey {
         hearableOnly ? "Nothing to hear yet" : "No memories yet"
     }
 
-    private var emptyDescription: String {
+    private var emptyDescription: LocalizedStringKey {
         hearableOnly
             ? "Record a story on iPhone or Apple Watch, or add an audio memory."
             : "Photos, stories, documents, and events live here — on this iPhone."

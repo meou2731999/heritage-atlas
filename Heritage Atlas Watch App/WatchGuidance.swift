@@ -49,7 +49,7 @@ struct HeadingCompass: View {
             }
         }
         .frame(width: 44, height: 44)
-        .accessibilityLabel(relativeDegrees == nil ? "Heading unavailable" : "Heading to place")
+                    .accessibilityLabel(relativeDegrees == nil ? LocalizedStringKey("Heading unavailable") : LocalizedStringKey("Heading to place"))
     }
 }
 
@@ -63,7 +63,7 @@ struct WatchClipPlayer: View {
         Button {
             toggle()
         } label: {
-            Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
+            Label(isPlaying ? LocalizedStringKey("Pause") : LocalizedStringKey("Play"), systemImage: isPlaying ? "pause.fill" : "play.fill")
                 .font(.caption)
         }
         .onDisappear {

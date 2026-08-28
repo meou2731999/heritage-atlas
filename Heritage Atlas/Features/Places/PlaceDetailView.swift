@@ -40,7 +40,7 @@ struct PlaceDetailView: View {
                 ContentUnavailableView("Place not found", systemImage: "mappin.slash")
             }
         }
-        .navigationTitle(place?.name ?? "Place")
+        .navigationTitle(place?.name ?? HeritageLocale.string("Place"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -95,7 +95,7 @@ struct PlaceDetailView: View {
     @ViewBuilder
     private func content(_ place: Place) -> some View {
         List {
-            if place.hasCoordinates, let latitude = place.latitude, let longitude = place.longitude {
+            if place.hasCoordinates, let latitude: Double = place.latitude, let longitude = place.longitude {
                 Section {
                     Map(initialPosition: .region(PlaceMapRegion.region(
                         around: GeoPoint(latitude: latitude, longitude: longitude)
@@ -161,7 +161,7 @@ struct PlaceDetailView: View {
             }
 
             let linkedMemories = MemoryQueries.forPlace(placeID, in: memories)
-            Section("Memories · \(linkedMemories.count)") {
+            Section {
                 if linkedMemories.isEmpty {
                     Text("No memories linked to this place yet.")
                         .foregroundStyle(.secondary)
@@ -179,22 +179,25 @@ struct PlaceDetailView: View {
                 } label: {
                     Label("All memories", systemImage: "waveform")
                 }
+            } header: {
+                Text("Memories · \(linkedMemories.count)")
             }
         }
     }
 
     private func linkSubtitle(_ link: PersonPlace) -> String {
-        var parts = [link.role.displayName]
-        let years = PlaceYears.format(from: link.yearFrom, to: link.yearTo)
+        var parts: [String] = [link.role.displayName]
+        let years: String = PlaceYears.format(from: link.yearFrom, to: link.yearTo)
         if !years.isEmpty { parts.append(years) }
         return parts.joined(separator: " · ")
     }
 
     private func openInMaps() {
-        guard let place, let latitude = place.latitude, let longitude = place.longitude else { return }
-        let item = MKMapItem(placemark: MKPlacemark(
-            coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        ))
+        guard let place, let latitude: Double = place.latitude, let longitude: Double = place.longitude else { return }
+        let item: MKMapItem = MKMapItem(
+            location: CLLocation(latitude: latitude, longitude: longitude),
+            address: nil
+        )
         item.name = place.name
         item.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDefault])
     }

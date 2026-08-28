@@ -2,7 +2,7 @@ import HeritageAtlasCore
 import SwiftUI
 
 extension PlaceRole {
-    var displayName: String { localizedName(.en) }
+    var displayName: String { localizedName(HeritageLocale.kinship) }
 
     var mapTint: Color {
         switch self {

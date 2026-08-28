@@ -104,7 +104,7 @@ struct PersonEditorView: View {
                     }
                 }
             }
-            .navigationTitle(mode == .create ? "New person" : "Edit person")
+            .navigationTitle(mode == .create ? LocalizedStringKey("New person") : LocalizedStringKey("Edit person"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -138,7 +138,7 @@ struct PersonEditorView: View {
                     PersonAvatarView(person: existing, size: 96)
                 } else {
                     PersonAvatarView(
-                        name: draft.fullName.isEmpty ? "New" : draft.fullName,
+                        name: draft.fullName.isEmpty ? HeritageLocale.string("New") : draft.fullName,
                         gender: draft.gender,
                         size: 96
                     )
@@ -148,7 +148,9 @@ struct PersonEditorView: View {
             .clipShape(Circle())
 
             PhotosPicker(selection: $pickerItem, matching: .images) {
-                Text(previewImage == nil && existing?.photoMediaID == nil ? "Add photo" : "Change photo")
+                Text(previewImage == nil && existing?.photoMediaID == nil
+                     ? LocalizedStringKey("Add photo")
+                     : LocalizedStringKey("Change photo"))
             }
             if previewImage != nil || existing?.photoMediaID != nil {
                 Button("Remove photo", role: .destructive) {

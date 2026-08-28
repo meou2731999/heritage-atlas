@@ -30,12 +30,12 @@ struct PlacesListView: View {
         List {
             if filtered.isEmpty {
                 ContentUnavailableView(
-                    burialsOnly ? "No burial locations" : "No places yet",
+                    burialsOnly ? LocalizedStringKey("No burial locations") : LocalizedStringKey("No places yet"),
                     systemImage: burialsOnly ? "leaf" : "mappin.and.ellipse",
                     description: Text(
                         burialsOnly
-                            ? "Link a person to a place with the Burial role."
-                            : "Add a home, school, or cemetery to put this family on the map."
+                            ? LocalizedStringKey("Link a person to a place with the Burial role.")
+                            : LocalizedStringKey("Add a home, school, or cemetery to put this family on the map.")
                     )
                 )
             } else {
@@ -61,7 +61,7 @@ struct PlacesListView: View {
             }
         }
         .searchable(text: $query, prompt: "Place name")
-        .navigationTitle(burialsOnly ? "Burials" : "Places")
+        .navigationTitle(burialsOnly ? LocalizedStringKey("Burials") : LocalizedStringKey("Places"))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -109,10 +109,10 @@ struct PlacesListView: View {
             parts.append(uniqueRoles.prefix(3).joined(separator: " · "))
         }
         if peopleCount > 0 {
-            parts.append(peopleCount == 1 ? "1 person" : "\(peopleCount) people")
+            parts.append(peopleCount == 1 ? HeritageLocale.string("1 person") : HeritageLocale.string("\(peopleCount) people"))
         }
         if !place.hasCoordinates {
-            parts.append("No coordinates")
+            parts.append(HeritageLocale.string("No coordinates"))
         }
         return parts.joined(separator: " · ")
     }

@@ -14,22 +14,22 @@ struct WatchHomeView: View {
                 NavigationLink {
                     SearchPersonView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Tìm người" : "Search", systemImage: "magnifyingglass")
+                    Label("Search people", systemImage: "magnifyingglass")
                 }
 
                 NavigationLink {
                     FavoritesView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Yêu thích" : "Favorites", systemImage: "heart.fill")
+                    Label("Favorites", systemImage: "heart.fill")
                 }
             } header: {
-                Text(snapshot.localeKinship == .vi ? "Gia đình" : "Family")
+                Text("Family")
             } footer: {
                 Text(familyFooter)
             }
 
             if !snapshot.favorites.isEmpty {
-                Section(snapshot.localeKinship == .vi ? "Yêu thích" : "Favorites") {
+                Section("Favorites") {
                     ForEach(snapshot.favorites) { person in
                         NavigationLink {
                             PersonGlanceView(snapshot: snapshot, person: person)
@@ -47,12 +47,12 @@ struct WatchHomeView: View {
                 NavigationLink {
                     NearbyPlacesView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Gần đây" : "Nearby", systemImage: "location.fill")
+                    Label("Nearby", systemImage: "location.fill")
                 }
                 NavigationLink {
                     CemeteryModeView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Nghĩa trang" : "Cemetery", systemImage: "leaf.fill")
+                    Label("Cemetery", systemImage: "leaf.fill")
                 }
             } footer: {
                 Text(placesFooter)
@@ -62,23 +62,23 @@ struct WatchHomeView: View {
                 NavigationLink {
                     RecordStoryView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Ghi chuyện" : "Record story", systemImage: "mic.fill")
+                    Label("Record story", systemImage: "mic.fill")
                 }
                 NavigationLink {
                     FeaturedMomentsView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Kỷ niệm" : "Moments", systemImage: "star.fill")
+                    Label("Moments", systemImage: "star.fill")
                 }
                 NavigationLink {
                     TodayView(snapshot: snapshot)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Hôm nay" : "Today", systemImage: "calendar")
+                    Label("Today", systemImage: "calendar")
                 }
                 if snapshot.currentWalk != nil {
                     NavigationLink {
                         FamilyWalkView(snapshot: snapshot)
                     } label: {
-                        Label(snapshot.localeKinship == .vi ? "Family Walk" : "Family Walk", systemImage: "figure.walk")
+                        Label("Family Walk", systemImage: "figure.walk")
                     }
                 }
             } footer: {
@@ -91,41 +91,26 @@ struct WatchHomeView: View {
     private var familyFooter: String {
         let living = snapshot.insightsGlance?.livingCount ?? familyCount
         let generations = snapshot.insightsGlance?.generationCount
-        if snapshot.localeKinship == .vi {
-            if let generations {
-                return "\(living) còn sống · \(generations) thế hệ · cache từ iPhone"
-            }
-            return "\(familyCount) người · cache từ iPhone"
-        }
         if let generations {
-            return "\(living) living · \(generations) gen · from iPhone"
+            return String(localized: "\(living) living · \(generations) gen · from iPhone", locale: snapshot.localeKinship.locale)
         }
-        return "\(familyCount) people · from iPhone"
+        return String(localized: "\(familyCount) people · from iPhone", locale: snapshot.localeKinship.locale)
     }
 
     private var placesFooter: String {
         let nearby = snapshot.nearbyPlaces.count
         let cemetery = snapshot.cemeteryPins.isEmpty ? snapshot.burialPlaces.count : snapshot.cemeteryPins.count
-        if snapshot.localeKinship == .vi {
-            return "\(nearby) nơi · \(cemetery) nghĩa trang · offline"
-        }
-        return "\(nearby) places · \(cemetery) cemetery pins · offline"
+        return String(localized: "\(nearby) places · \(cemetery) cemetery pins · offline", locale: snapshot.localeKinship.locale)
     }
 
     private var memoriesFooter: String {
         let featured = snapshot.featuredMemories.count
         let moments = WatchSnapshotExplorer.timelineMoments(in: snapshot).count
         let today = WatchSnapshotExplorer.todayEvents(in: snapshot).count
-        if snapshot.localeKinship == .vi {
-            if snapshot.memorialRemindersEnabled == true {
-                return "\(featured) nổi bật · \(moments) khoảnh khắc · \(today) hôm nay"
-            }
-            return "\(featured) nổi bật · \(moments) khoảnh khắc. Bật nhắc giỗ trên iPhone để có Hôm nay."
-        }
         if snapshot.memorialRemindersEnabled == true {
-            return "\(featured) featured · \(moments) moments · \(today) today"
+            return String(localized: "\(featured) featured · \(moments) moments · \(today) today", locale: snapshot.localeKinship.locale)
         }
-        return "\(featured) featured · \(moments) moments. Opt in to memorials on iPhone for Today."
+        return String(localized: "\(featured) featured · \(moments) moments. Opt in to memorials on iPhone for Today.", locale: snapshot.localeKinship.locale)
     }
 }
 

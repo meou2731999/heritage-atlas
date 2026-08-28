@@ -127,6 +127,7 @@ enum DemoFamilySeeder {
         link(ongNgoai, anBang, .burial, from: 2008)
         link(baNgoai, anBang, .burial, from: 2012)
 
+        @discardableResult
         func event(
             _ person: Person,
             _ date: Date,

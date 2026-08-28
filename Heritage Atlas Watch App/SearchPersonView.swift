@@ -13,7 +13,7 @@ struct SearchPersonView: View {
         List {
             if results.isEmpty {
                 ContentUnavailableView(
-                    snapshot.localeKinship == .vi ? "Không có kết quả" : "No matches",
+                    "No matches",
                     systemImage: "magnifyingglass"
                 )
             } else {
@@ -29,8 +29,8 @@ struct SearchPersonView: View {
                 }
             }
         }
-        .searchable(text: $query, prompt: snapshot.localeKinship == .vi ? "Tên, biệt danh, xưng hô" : "Name, nickname, kinship")
-        .navigationTitle(snapshot.localeKinship == .vi ? "Tìm" : "Search")
+        .searchable(text: $query, prompt: "Name, nickname, kinship")
+        .navigationTitle("Search")
     }
 }
 

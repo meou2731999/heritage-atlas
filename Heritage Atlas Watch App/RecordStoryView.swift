@@ -15,8 +15,6 @@ struct RecordStoryView: View {
         personID.flatMap { WatchSnapshotExplorer.person(id: $0, in: snapshot) }
     }
 
-    private var vi: Bool { snapshot.localeKinship == .vi }
-
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
@@ -43,34 +41,34 @@ struct RecordStoryView: View {
                         .multilineTextAlignment(.center)
                 }
                 if sent {
-                    Text(vi ? "Đã gửi về iPhone" : "Sent to iPhone")
+                    Text("Sent to iPhone")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
 
                 if recorder.isRecording {
-                    Button(vi ? "Dừng" : "Stop") {
+                    Button("Stop") {
                         recorder.stop()
                     }
                     .tint(.red)
                 } else if recorder.recordedURL != nil, sent == false {
-                    Button(vi ? "Xong" : "Done") {
+                    Button("Done") {
                         Task { await send() }
                     }
                     .disabled(sending)
-                    Button(vi ? "Ghi lại" : "Record again", role: .destructive) {
+                    Button("Record again", role: .destructive) {
                         recorder.discard()
                         Task { _ = await recorder.start() }
                     }
                 } else if sent == false {
-                    Button(vi ? "Ghi" : "Record") {
+                    Button("Record") {
                         Task { _ = await recorder.start() }
                     }
                 }
             }
             .padding(.top, 8)
         }
-        .navigationTitle(vi ? "Ghi chuyện" : "Record")
+        .navigationTitle("Record story")
         .task {
             if recorder.recordedURL == nil, recorder.isRecording == false, sent == false {
                 _ = await recorder.start()
@@ -83,11 +81,11 @@ struct RecordStoryView: View {
         }
     }
 
-    private var statusTitle: String {
-        if sent { return vi ? "Đã gửi" : "Sent" }
-        if recorder.isRecording { return vi ? "Đang ghi…" : "Recording…" }
-        if recorder.recordedURL != nil { return vi ? "Sẵn sàng gửi" : "Ready to send" }
-        return vi ? "Một chạm để ghi" : "Tap to record"
+    private var statusTitle: LocalizedStringKey {
+        if sent { return "Sent" }
+        if recorder.isRecording { return "Recording…" }
+        if recorder.recordedURL != nil { return "Ready to send" }
+        return "Tap to record"
     }
 
     private func send() async {
@@ -125,7 +123,7 @@ final class WatchVoiceRecorder {
         errorMessage = nil
         let granted = await Self.requestPermission()
         guard granted else {
-            errorMessage = "Microphone is off"
+            errorMessage = HeritageLocale.string("Microphone is off")
             return false
         }
         do {

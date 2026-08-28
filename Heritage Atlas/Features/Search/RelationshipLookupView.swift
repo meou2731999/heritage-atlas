@@ -45,10 +45,10 @@ struct RelationshipLookupView: View {
             if let fromID, let toID, fromID != toID {
                 Section {
                     NavigationLink(value: fromID) {
-                        Text("Open \(fromPerson?.displayName ?? "person A")")
+                        Text("Open \(fromPerson?.displayName ?? HeritageLocale.string("person A"))")
                     }
                     NavigationLink(value: toID) {
-                        Text("Open \(toPerson?.displayName ?? "person B")")
+                        Text("Open \(toPerson?.displayName ?? HeritageLocale.string("person B"))")
                     }
                 }
             }
@@ -100,12 +100,12 @@ struct RelationshipLookupView: View {
                     pathGlance(path)
                     HStack(alignment: .top, spacing: 16) {
                         callCard(
-                            title: fromIsMe ? "You call them" : "\(fromName) calls",
+                            title: fromIsMe ? LocalizedStringKey("You call them") : LocalizedStringKey("\(fromName) calls"),
                             subtitle: toName,
                             value: naming.youCallThem
                         )
                         callCard(
-                            title: fromIsMe ? "They call you" : "\(toName) calls",
+                            title: fromIsMe ? LocalizedStringKey("They call you") : LocalizedStringKey("\(toName) calls"),
                             subtitle: fromIsMe ? toName : fromName,
                             value: naming.theyCallYou
                         )
@@ -119,7 +119,7 @@ struct RelationshipLookupView: View {
         }
     }
 
-    private func pickerRow(title: String, person: Person?) -> some View {
+    private func pickerRow(title: LocalizedStringKey, person: Person?) -> some View {
         HStack {
             Text(title)
             Spacer()
@@ -153,9 +153,9 @@ struct RelationshipLookupView: View {
             .foregroundStyle(.secondary)
     }
 
-    private func callCard(title: String, subtitle: String, value: String) -> some View {
+    private func callCard(title: LocalizedStringKey, subtitle: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title.uppercased())
+            Text(title)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
             Text(value)

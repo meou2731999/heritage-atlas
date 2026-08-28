@@ -27,7 +27,7 @@ struct FamilyWalkListView: View {
                     } label: {
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Text(walk.title.isEmpty ? "Untitled walk" : walk.title)
+                                Text(walk.title.isEmpty ? HeritageLocale.string("Untitled walk") : walk.title)
                                     .font(.body.weight(.medium))
                                 if walk.id == currentID {
                                     Text("Current")
@@ -46,7 +46,7 @@ struct FamilyWalkListView: View {
                         Button("Delete", role: .destructive) {
                             session.deleteWalk(walk, context: modelContext)
                         }
-                        Button(walk.id == currentID ? "Clear Watch" : "Use on Watch") {
+                        Button(walk.id == currentID ? LocalizedStringKey("Clear Watch") : LocalizedStringKey("Use on Watch")) {
                             session.setCurrentWalk(walk.id == currentID ? nil : walk.id, context: modelContext)
                         }
                     }
@@ -72,7 +72,7 @@ struct FamilyWalkListView: View {
     private func subtitle(for walk: FamilyWalk) -> String {
         let names = walk.stopIDs.compactMap { id in places.first { $0.id == id }?.name }
         if names.isEmpty {
-            return "No stops yet"
+            return HeritageLocale.string("No stops yet")
         }
         return names.joined(separator: " → ")
     }
@@ -98,7 +98,7 @@ struct FamilyWalkDetailView: View {
             if let walk {
                 List {
                     Section {
-                        Text(walk.title.isEmpty ? "Untitled walk" : walk.title)
+                        Text(walk.title.isEmpty ? HeritageLocale.string("Untitled walk") : walk.title)
                             .font(.title3.weight(.semibold))
                         if let notes = walk.notes, notes.isEmpty == false {
                             Text(notes)
@@ -130,7 +130,7 @@ struct FamilyWalkDetailView: View {
                     }
 
                     Section {
-                        Button(isCurrent ? "This walk is on Apple Watch" : "Use on Apple Watch") {
+                        Button(isCurrent ? LocalizedStringKey("This walk is on Apple Watch") : LocalizedStringKey("Use on Apple Watch")) {
                             session.setCurrentWalk(isCurrent ? nil : walk.id, context: modelContext)
                         }
                         .disabled(walk.stopIDs.isEmpty)
@@ -152,8 +152,8 @@ struct FamilyWalkDetailView: View {
 
     private func stopSubtitle(_ place: Place) -> String {
         let count = MemoryQueries.forPlace(place.id, in: memories).count
-        if count == 0 { return place.hasCoordinates ? "On the map" : "Name only" }
-        return count == 1 ? "1 memory" : "\(count) memories"
+        if count == 0 { return place.hasCoordinates ? HeritageLocale.string("On the map") : HeritageLocale.string("Name only") }
+        return count == 1 ? HeritageLocale.string("1 memory") : HeritageLocale.string("\(count) memories")
     }
 }
 
@@ -203,7 +203,7 @@ struct FamilyWalkEditorView: View {
                                 Text("\(index + 1)")
                                     .font(.caption.weight(.bold))
                                     .foregroundStyle(.secondary)
-                                Text(places.first { $0.id == id }?.name ?? "Missing place")
+                                Text(places.first { $0.id == id }?.name ?? HeritageLocale.string("Missing place"))
                                 Spacer()
                                 if index > 0 {
                                     Button("Up") { move(id, by: -1) }
@@ -223,7 +223,7 @@ struct FamilyWalkEditorView: View {
                     Button("Add place") { pickingPlace = true }
                 }
             }
-            .navigationTitle(existing == nil ? "New walk" : "Edit walk")
+            .navigationTitle(existing == nil ? LocalizedStringKey("New walk") : LocalizedStringKey("Edit walk"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

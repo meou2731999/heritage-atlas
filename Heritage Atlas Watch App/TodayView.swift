@@ -4,8 +4,6 @@ import SwiftUI
 struct TodayView: View {
     let snapshot: WatchSnapshot
 
-    private var isVI: Bool { snapshot.localeKinship == .vi }
-
     private var optedIn: Bool { snapshot.memorialRemindersEnabled == true }
 
     private var events: [WatchCalendarEvent] {
@@ -16,22 +14,18 @@ struct TodayView: View {
         List {
             if optedIn == false {
                 ContentUnavailableView(
-                    isVI ? "Hôm nay tắt" : "Today is off",
+                    "Today is off",
                     systemImage: "calendar.badge.exclamationmark",
-                    description: Text(isVI
-                        ? "Bật Memorial reminders trên iPhone để xem sinh nhật, giỗ và ngày cưới ở đây."
-                        : "Turn on Memorial reminders on iPhone to see birthdays, giỗ, and weddings here.")
+                    description: Text("Turn on Memorial reminders on iPhone to see birthdays, giỗ, and weddings here.")
                 )
             } else if events.isEmpty {
                 ContentUnavailableView(
-                    isVI ? "Hôm nay yên" : "Nothing today",
+                    "Nothing today",
                     systemImage: "calendar",
-                    description: Text(isVI
-                        ? "Không có sinh nhật, giỗ hay ngày cưới hôm nay."
-                        : "No birthdays, memorials, or weddings today.")
+                    description: Text("No birthdays, memorials, or weddings today.")
                 )
             } else {
-                Section(isVI ? "Hôm nay" : "Today") {
+                Section("Today") {
                     ForEach(events) { event in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(event.title)
@@ -44,19 +38,19 @@ struct TodayView: View {
             }
 
             if let glance = snapshot.insightsGlance {
-                Section(isVI ? "Gia đình" : "Family") {
-                    LabeledContent(isVI ? "Còn sống" : "Living", value: "\(glance.livingCount)")
-                    LabeledContent(isVI ? "Thế hệ" : "Generations", value: "\(glance.generationCount)")
+                Section("Family") {
+                    LabeledContent("Living", value: "\(glance.livingCount)")
+                    LabeledContent("Generations", value: "\(glance.generationCount)")
                 }
             }
         }
-        .navigationTitle(isVI ? "Hôm nay" : "Today")
+        .navigationTitle("Today")
     }
 
     private func subtitle(_ event: WatchCalendarEvent) -> String {
         let kind = event.kind.localizedName(snapshot.localeKinship)
         if let years = event.years {
-            return isVI ? "\(kind) · \(years) năm" : "\(kind) · \(years) years"
+            return String(localized: "\(kind) · \(years) years", locale: snapshot.localeKinship.locale)
         }
         return kind
     }

@@ -176,7 +176,7 @@ struct SearchView: View {
         }
     }
 
-    private var peopleHeader: String {
+    private var peopleHeader: LocalizedStringKey {
         if query.isEmpty { return "Everyone" }
         if result.answerTitle != nil { return "People" }
         return "Matching “\(query)”"

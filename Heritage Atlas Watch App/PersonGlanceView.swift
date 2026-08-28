@@ -44,12 +44,12 @@ struct PersonGlanceView: View {
 
             if isMe {
                 Section {
-                    Text(snapshot.localeKinship == .vi ? "Đây là bạn" : "This is you")
+                    Text("This is you")
                 }
             } else if let relationship {
-                Section(snapshot.localeKinship == .vi ? "Đây là ai?" : "Who is this?") {
+                Section("Who is this?") {
                     glanceLabeled(
-                        title: snapshot.localeKinship == .vi ? "Bạn gọi" : "You call",
+                        title: "You call",
                         value: relationship.youCallThem
                     )
                     if !relationship.pathExplanation.isEmpty {
@@ -59,21 +59,23 @@ struct PersonGlanceView: View {
                     }
                 }
 
-                Section(snapshot.localeKinship == .vi ? "Mình là ai với \(person.displayName)?" : "Who am I to \(person.displayName)?") {
+                Section {
                     glanceLabeled(
-                        title: snapshot.localeKinship == .vi ? "Họ gọi bạn" : "They call you",
+                        title: "They call you",
                         value: relationship.theyCallYou
                     )
+                } header: {
+                    Text("Who am I to \(person.displayName)?")
                 }
             } else {
                 Section {
-                    Text(snapshot.localeKinship == .vi ? "Chưa có quan hệ trong cache" : "No relationship on file")
+                    Text("No relationship on file")
                         .foregroundStyle(.secondary)
                 }
             }
 
             if !pathLines.isEmpty {
-                Section(snapshot.localeKinship == .vi ? "Đường đi" : "Path") {
+                Section("Path") {
                     ForEach(Array(pathLines.enumerated()), id: \.offset) { _, line in
                         Text(line)
                             .font(line == "YOU" || line == "Bạn" ? .headline : .body)
@@ -83,7 +85,7 @@ struct PersonGlanceView: View {
             }
 
             if let featured {
-                Section(snapshot.localeKinship == .vi ? "Kỷ niệm" : "Memory") {
+                Section("Memory") {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(featured.title)
                             .font(.headline)
@@ -108,7 +110,7 @@ struct PersonGlanceView: View {
             }
 
             if moments.isEmpty == false {
-                Section(snapshot.localeKinship == .vi ? "Khoảnh khắc" : "Moments") {
+                Section("Moments") {
                     ForEach(moments) { moment in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(moment.title)
@@ -125,7 +127,7 @@ struct PersonGlanceView: View {
                 NavigationLink {
                     RecordStoryView(snapshot: snapshot, personID: person.id)
                 } label: {
-                    Label(snapshot.localeKinship == .vi ? "Ghi chuyện" : "Record story", systemImage: "mic.fill")
+                    Label("Record story", systemImage: "mic.fill")
                 }
             }
         }
@@ -133,7 +135,7 @@ struct PersonGlanceView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func glanceLabeled(title: String, value: String) -> some View {
+    private func glanceLabeled(title: LocalizedStringKey, value: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
                 .font(.caption2)

@@ -15,7 +15,7 @@ struct PersonGalleryView: View {
     private var photos: [GalleryItem] {
         var items: [GalleryItem] = []
         if let person, let photoID = person.photoMediaID {
-            items.append(GalleryItem(id: photoID, memoryID: nil, title: "Profile photo"))
+            items.append(GalleryItem(id: photoID, memoryID: nil, title: HeritageLocale.string("Profile photo")))
         }
         for memory in MemoryQueries.photos(for: personID, in: memories) {
             if let mediaID = memory.mediaIDs.first {
@@ -31,7 +31,7 @@ struct PersonGalleryView: View {
                 ContentUnavailableView(
                     "No photos yet",
                     systemImage: "photo.on.rectangle",
-                    description: Text("Add a profile photo or a photo memory for \(person?.displayName ?? "this person").")
+                    description: Text("Add a profile photo or a photo memory for \(person?.displayName ?? HeritageLocale.string("this person")).")
                 )
             } else {
                 ScrollView {

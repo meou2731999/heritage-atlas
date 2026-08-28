@@ -17,6 +17,7 @@ struct ContentView: View {
                 SnapshotEmptyView()
             }
         }
+        .heritageLocale(snapshot?.localeKinship ?? .vi)
     }
 }
 

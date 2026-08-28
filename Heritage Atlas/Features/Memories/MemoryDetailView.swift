@@ -31,14 +31,14 @@ struct MemoryDetailView: View {
                 ContentUnavailableView("Memory not found", systemImage: "waveform.slash")
             }
         }
-        .navigationTitle(memory?.title ?? "Memory")
+        .navigationTitle(memory?.title ?? HeritageLocale.string("Memory"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button("Edit", systemImage: "pencil") { showEditor = true }
                     if let memory {
-                        Button(memory.isFeatured ? "Remove from Watch glance" : "Feature on Watch", systemImage: "applewatch") {
+                        Button(memory.isFeatured ? LocalizedStringKey("Remove from Watch glance") : LocalizedStringKey("Feature on Watch"), systemImage: "applewatch") {
                             session.setMemoryFeatured(memory, isFeatured: !memory.isFeatured, context: modelContext)
                         }
                     }
@@ -130,7 +130,10 @@ struct MemoryDetailView: View {
                             if transcribing {
                                 Label("Transcribing on device…", systemImage: "waveform")
                             } else {
-                                Label(memory.body.isEmpty ? "Transcribe on this iPhone" : "Re-transcribe on this iPhone", systemImage: "text.badge.waveform")
+                                Label(memory.body.isEmpty
+                                      ? LocalizedStringKey("Transcribe on this iPhone")
+                                      : LocalizedStringKey("Re-transcribe on this iPhone"),
+                                      systemImage: "text.badge.waveform")
                             }
                         }
                         .disabled(transcribing)
@@ -152,7 +155,9 @@ struct MemoryDetailView: View {
             Section("People") {
                 let linked = people.filter { memory.personIDs.contains($0.id) }
                 if linked.isEmpty {
-                    Text(memory.isFromWatch ? "Assign someone from this Watch recording." : "No people linked yet.")
+                    Text(memory.isFromWatch
+                         ? LocalizedStringKey("Assign someone from this Watch recording.")
+                         : LocalizedStringKey("No people linked yet."))
                         .foregroundStyle(.secondary)
                     if memory.isFromWatch {
                         Button("Assign a person") { pickingPerson = true }
@@ -224,6 +229,6 @@ struct MemoryDetailView: View {
     }
 
     private func mediaFileName(_ mediaID: UUID) -> String {
-        "Document \(mediaID.uuidString.prefix(8))"
+        HeritageLocale.string("Document \(String(mediaID.uuidString.prefix(8)))")
     }
 }

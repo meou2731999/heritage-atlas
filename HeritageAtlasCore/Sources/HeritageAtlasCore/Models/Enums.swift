@@ -158,4 +158,23 @@ public enum MediaKind: String, Codable, Sendable, CaseIterable {
 public enum KinshipLocale: String, Codable, Sendable, CaseIterable {
     case vi
     case en
+
+    public var locale: Locale {
+        switch self {
+        case .vi: Locale(identifier: "vi")
+        case .en: Locale(identifier: "en")
+        }
+    }
+}
+
+/// In-app language used by String Catalog lookups (`String(localized:)`).
+/// SwiftUI `Text("…")` follows `.environment(\.locale)` separately.
+public enum HeritageLocale: Sendable {
+    nonisolated(unsafe) public static var kinship: KinshipLocale = .vi
+
+    public static var locale: Locale { kinship.locale }
+
+    public static func string(_ key: String.LocalizationValue) -> String {
+        String(localized: key, locale: locale)
+    }
 }

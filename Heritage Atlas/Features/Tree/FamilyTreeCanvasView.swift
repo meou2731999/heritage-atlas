@@ -187,7 +187,7 @@ private struct PersonTreeCard: View {
                         .padding(.bottom, 6)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(node.isCollapsed ? "Expand branch" : "Collapse branch")
+                .accessibilityLabel(node.isCollapsed ? LocalizedStringKey("Expand branch") : LocalizedStringKey("Collapse branch"))
             }
         }
         .frame(width: TreeLayoutEngine.cardSize.width, height: TreeLayoutEngine.cardSize.height)

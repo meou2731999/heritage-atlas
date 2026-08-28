@@ -51,7 +51,7 @@ struct PlaceEditorView: View {
                     MapReader { proxy in
                         Map(position: $cameraPosition) {
                             if let coordinate {
-                                Marker(name.isEmpty ? "Place" : name, coordinate: CLLocationCoordinate2D(
+                                Marker(name.isEmpty ? HeritageLocale.string("Place") : name, coordinate: CLLocationCoordinate2D(
                                     latitude: coordinate.latitude,
                                     longitude: coordinate.longitude
                                 ))
@@ -95,7 +95,7 @@ struct PlaceEditorView: View {
                     }
                 }
             }
-            .navigationTitle(placeID == nil ? "New place" : "Edit place")
+            .navigationTitle(placeID == nil ? LocalizedStringKey("New place") : LocalizedStringKey("Edit place"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

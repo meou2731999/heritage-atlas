@@ -56,7 +56,7 @@ struct InsightsView: View {
             }
 
             if let largest = insights.largestGeneration {
-                Section("Largest generation · \(largest.count)") {
+                Section {
                     ForEach(largest.people) { person in
                         NavigationLink {
                             PersonProfileView(personID: person.id)
@@ -64,13 +64,15 @@ struct InsightsView: View {
                             Text(person.name)
                         }
                     }
+                } header: {
+                    Text("Largest generation · \(largest.count)")
                 }
             }
         }
         .navigationTitle("Insights")
     }
 
-    private func metric(_ title: String, _ value: String) -> some View {
+    private func metric(_ title: LocalizedStringKey, _ value: String) -> some View {
         HStack {
             Text(title)
             Spacer()

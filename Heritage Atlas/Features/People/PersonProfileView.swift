@@ -32,7 +32,7 @@ struct PersonProfileView: View {
                 ContentUnavailableView("Person not found", systemImage: "person.slash")
             }
         }
-        .navigationTitle(person?.displayName ?? "Person")
+        .navigationTitle(person?.displayName ?? HeritageLocale.string("Person"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -113,7 +113,7 @@ struct PersonProfileView: View {
                 }
                 detailRow("Gender", person.gender.displayName)
                 detailRow("Born", PersonLifeSpan.longDate(person.birthDate) ?? "—")
-                detailRow("Died", PersonLifeSpan.longDate(person.deathDate) ?? (person.isLiving ? "Living" : "—"))
+                detailRow("Died", PersonLifeSpan.longDate(person.deathDate) ?? (person.isLiving ? HeritageLocale.string("Living") : "—"))
                 if let occupation = person.occupation, !occupation.isEmpty {
                     detailRow("Occupation", occupation)
                 }
@@ -209,9 +209,9 @@ struct PersonProfileView: View {
         .padding(.vertical, 4)
     }
 
-    private func labeledValue(_ title: String, _ value: String) -> some View {
+    private func labeledValue(_ title: LocalizedStringKey, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(title.uppercased())
+            Text(title)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
             Text(value)
@@ -274,10 +274,10 @@ struct PersonProfileView: View {
                     NavigationLink {
                         PlaceDetailView(placeID: place.id)
                     } label: {
-                        PlaceRowView(place: place, subtitle: "Burial", role: .burial)
+                        PlaceRowView(place: place, subtitle: HeritageLocale.string("Burial"), role: .burial)
                     }
                 }
-                detailRow("Remembered by", linked.isEmpty ? "No memories yet" : "\(linked.count) memories · \(stories.count) stories")
+                detailRow("Remembered by", linked.isEmpty ? HeritageLocale.string("No memories yet") : HeritageLocale.string("\(linked.count) memories · \(stories.count) stories"))
                 if stories.isEmpty {
                     NavigationLink {
                         MemoryGapView()
@@ -289,7 +289,7 @@ struct PersonProfileView: View {
         }
     }
 
-    private var favoriteTitle: String {
+    private var favoriteTitle: LocalizedStringKey {
         session.isFavorite(personID: personID, context: modelContext) ? "Remove Watch favorite" : "Add Watch favorite"
     }
 
@@ -306,7 +306,7 @@ struct PersonProfileView: View {
             NavigationLink {
                 PersonGalleryView(personID: person.id)
             } label: {
-                Label(photos.isEmpty && person.photoMediaID == nil ? "Gallery" : "Gallery · \(photos.count + (person.photoMediaID == nil ? 0 : 1))", systemImage: "photo.on.rectangle")
+                Label(photos.isEmpty && person.photoMediaID == nil ? LocalizedStringKey("Gallery") : LocalizedStringKey("Gallery · \(photos.count + (person.photoMediaID == nil ? 0 : 1))"), systemImage: "photo.on.rectangle")
             }
             if linked.isEmpty {
                 Text("No memories yet.")
@@ -337,7 +337,7 @@ struct PersonProfileView: View {
         return parts.joined(separator: " · ")
     }
 
-    private func detailRow(_ title: String, _ value: String) -> some View {
+    private func detailRow(_ title: LocalizedStringKey, _ value: String) -> some View {
         HStack {
             Text(title)
             Spacer()
@@ -448,25 +448,25 @@ private struct RelativeGroups {
         }
 
         var groups: [Group] = []
-        if let g = rows(for: graph.parents(of: person.id), title: "Parents", relationship: { node in
+        if let g = rows(for: graph.parents(of: person.id), title: HeritageLocale.string("Parents"), relationship: { node in
             parentKinds.compactMap { kind in edge(from: node.id, to: person.id, kinds: [kind]) }.first
         }) { groups.append(g) }
 
-        if let g = rows(for: graph.siblings(of: person.id), title: "Siblings", relationship: { _ in nil }) {
+        if let g = rows(for: graph.siblings(of: person.id), title: HeritageLocale.string("Siblings"), relationship: { _ in nil }) {
             groups.append(g)
         }
 
         let spouses = graph.spousesAndPartners(of: person.id).filter { graph.hop(from: person.id, to: $0.id) == .spouse }
-        if let g = rows(for: spouses, title: "Spouse", relationship: { node in
+        if let g = rows(for: spouses, title: HeritageLocale.string("Spouse"), relationship: { node in
             coupleEdge(a: person.id, b: node.id, kind: .spouse)
         }) { groups.append(g) }
 
         let partners = graph.spousesAndPartners(of: person.id).filter { graph.hop(from: person.id, to: $0.id) == .partner }
-        if let g = rows(for: partners, title: "Partner", relationship: { node in
+        if let g = rows(for: partners, title: HeritageLocale.string("Partner"), relationship: { node in
             coupleEdge(a: person.id, b: node.id, kind: .partner)
         }) { groups.append(g) }
 
-        if let g = rows(for: graph.children(of: person.id), title: "Children", relationship: { node in
+        if let g = rows(for: graph.children(of: person.id), title: HeritageLocale.string("Children"), relationship: { node in
             parentKinds.compactMap { kind in edge(from: person.id, to: node.id, kinds: [kind]) }.first
         }) { groups.append(g) }
 

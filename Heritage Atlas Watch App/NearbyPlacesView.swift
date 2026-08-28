@@ -7,8 +7,6 @@ struct NearbyPlacesView: View {
     @State private var location = DeviceLocationSession()
     @State private var hapticTracker = ApproachHapticTracker()
 
-    private var isVI: Bool { snapshot.localeKinship == .vi }
-
     private var ranked: [WatchDistantPlace] {
         WatchSnapshotExplorer.rankedPlaces(
             snapshot.nearbyPlaces,
@@ -21,20 +19,18 @@ struct NearbyPlacesView: View {
         List {
             if snapshot.nearbyPlaces.isEmpty {
                 ContentUnavailableView(
-                    isVI ? "Chưa có nơi" : "No places",
+                    "No places",
                     systemImage: "location.slash",
-                    description: Text(isVI
-                        ? "Thêm nơi có tọa độ trên iPhone. Watch dùng snapshot offline."
-                        : "Add places with coordinates on iPhone. This list is from the offline snapshot.")
+                    description: Text("Add places with coordinates on iPhone. This list is from the offline snapshot.")
                 )
             } else {
                 statusSection
                 if let closest = ranked.first {
-                    Section(isVI ? "Gần nhất" : "Closest") {
+                    Section("Closest") {
                         compassRow(closest)
                     }
                 }
-                Section(isVI ? "Gia đình gần đây" : "Family nearby") {
+                Section("Family nearby") {
                     ForEach(ranked) { row in
                         NavigationLink {
                             WatchPlaceGlanceView(snapshot: snapshot, place: row.place, showsNavigate: false)
@@ -45,7 +41,7 @@ struct NearbyPlacesView: View {
                 }
             }
         }
-        .navigationTitle(isVI ? "Gần đây" : "Nearby")
+        .navigationTitle("Nearby")
         .onAppear {
             location.start(heading: true)
         }
@@ -61,20 +57,16 @@ struct NearbyPlacesView: View {
     private var statusSection: some View {
         if location.isDenied {
             Section {
-                Text(isVI
-                     ? "Chưa có quyền vị trí. Danh sách vẫn dùng snapshot trên Watch."
-                     : "Location is off. The list still uses the snapshot on this watch.")
+                Text("Location is off. The list still uses the snapshot on this watch.")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
         } else if !location.isAuthorized {
             Section {
-                Button(isVI ? "Bật vị trí" : "Enable location") {
+                Button("Enable location") {
                     location.start(heading: true)
                 }
-                Text(isVI
-                     ? "Để hiện khoảng cách và hướng. Vị trí không lưu."
-                     : "Used for distance and heading. Location is not stored.")
+                Text("Used for distance and heading. Location is not stored.")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -93,7 +85,7 @@ struct NearbyPlacesView: View {
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
-                    Text(row.distanceMeters.map(GeoMath.formatDistanceMeters) ?? (isVI ? "Chưa có GPS" : "No GPS yet"))
+                    Text(row.distanceMeters.map(GeoMath.formatDistanceMeters) ?? HeritageLocale.string("No GPS yet"))
                         .font(.caption.weight(.semibold))
                 }
             }

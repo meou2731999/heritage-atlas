@@ -130,12 +130,14 @@ struct MemorialCalendarView: View {
     private func memorialSubtitle(_ summary: FamilyMemorialSummary) -> String {
         var parts: [String] = []
         if let death = PersonLifeSpan.longDate(summary.deathDate) {
-            parts.append("Giỗ · \(death)")
+            parts.append(HeritageLocale.string("Giỗ · \(death)"))
         }
         if let burial = summary.burialPlaceName {
             parts.append(burial)
         }
-        let remembered = summary.rememberedByCount == 1 ? "1 memory" : "\(summary.rememberedByCount) memories"
+        let remembered = summary.rememberedByCount == 1
+            ? HeritageLocale.string("1 memory")
+            : HeritageLocale.string("\(summary.rememberedByCount) memories")
         parts.append(remembered)
         return parts.joined(separator: " · ")
     }

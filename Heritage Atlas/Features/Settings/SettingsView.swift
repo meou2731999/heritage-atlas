@@ -24,8 +24,8 @@ struct SettingsView: View {
     }
 
     private var currentWalkTitle: String {
-        guard let id = settings?.currentFamilyWalkID else { return "None" }
-        return walks.first { $0.id == id }?.title ?? "None"
+        guard let id = settings?.currentFamilyWalkID else { return HeritageLocale.string("None") }
+        return walks.first { $0.id == id }?.title ?? HeritageLocale.string("None")
     }
 
     var body: some View {
@@ -38,7 +38,7 @@ struct SettingsView: View {
                         HStack {
                             Text("Me")
                             Spacer()
-                            Text(me?.displayName ?? "Not set")
+                            Text(me?.displayName ?? HeritageLocale.string("Not set"))
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -54,7 +54,7 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Picker("Kinship language", selection: $locale) {
+                    Picker("Language", selection: $locale) {
                         ForEach(KinshipLocale.allCases, id: \.self) { value in
                             Text(value.displayName).tag(value)
                         }
@@ -63,9 +63,9 @@ struct SettingsView: View {
                         session.setKinshipLocale(newValue, context: modelContext)
                     }
                 } header: {
-                    Text("Address terms")
+                    Text("Language")
                 } footer: {
-                    Text("Vietnamese (Chú, Bác, Cậu…) or English (Uncle, Aunt…).")
+                    Text("App screens and kinship names use this language.")
                 }
 
                 Section {
@@ -114,14 +114,20 @@ struct SettingsView: View {
                     HStack {
                         Text("iCloud")
                         Spacer()
-                        Text(CloudKitAvailability.isICloudAccountAvailable ? "Available" : "Off this device")
+                        Text(CloudKitAvailability.isICloudAccountAvailable
+                             ? HeritageLocale.string("Available")
+                             : HeritageLocale.string("Off this device"))
                             .foregroundStyle(.secondary)
                     }
-                    Text(CloudKitAvailability.isICloudAccountAvailable
-                         ? "Family data can sync between your devices when iCloud is on. Heritage Atlas never requires sign-in."
-                         : "Working locally. iCloud is optional — the family tree, search, and relationships work fully offline.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                    Group {
+                        if CloudKitAvailability.isICloudAccountAvailable {
+                            Text("Family data can sync between your devices when iCloud is on. Heritage Atlas never requires sign-in.")
+                        } else {
+                            Text("Working locally. iCloud is optional — the family tree, search, and relationships work fully offline.")
+                        }
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 } header: {
                     Text("Sync")
                 }

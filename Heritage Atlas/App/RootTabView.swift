@@ -14,7 +14,7 @@ enum FamilyMapMode: String, CaseIterable, Hashable {
     case family
     case cemetery
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .family: "Family"
         case .cemetery: "Cemetery"
@@ -26,6 +26,11 @@ struct RootTabView: View {
     @Environment(FamilySession.self) private var session
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
+    @Query private var settingsRows: [AppSettings]
+
+    private var kinship: KinshipLocale {
+        settingsRows.first?.localeKinship ?? .vi
+    }
 
     var body: some View {
         @Bindable var session = session
@@ -46,6 +51,7 @@ struct RootTabView: View {
                 SettingsView()
             }
         }
+        .heritageLocale(kinship)
         .task {
             session.refresh(context: modelContext)
         }

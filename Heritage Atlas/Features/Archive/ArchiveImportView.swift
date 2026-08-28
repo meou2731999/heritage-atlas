@@ -73,7 +73,7 @@ struct ArchiveImportView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 }
                 PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Label(image == nil ? "Choose photo" : "Choose another photo", systemImage: "photo")
+                    Label(image == nil ? LocalizedStringKey("Choose photo") : LocalizedStringKey("Choose another photo"), systemImage: "photo")
                 }
                 Button("Choose file") { importingDocument = true }
                 if isRecognizing {
@@ -181,7 +181,7 @@ struct ArchiveImportView: View {
         ocrLines = lines
         selectedPersonIDs = []
         if title.isEmpty {
-            title = "Archive scan"
+            title = HeritageLocale.string("Archive scan")
         }
         isRecognizing = false
     }

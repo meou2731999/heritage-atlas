@@ -8,8 +8,6 @@ struct WatchPlaceGlanceView: View {
 
     @State private var location = DeviceLocationSession()
 
-    private var isVI: Bool { snapshot.localeKinship == .vi }
-
     private var ranked: WatchDistantPlace? {
         WatchSnapshotExplorer.rankedPlaces(
             [place],
@@ -34,9 +32,9 @@ struct WatchPlaceGlanceView: View {
                 HStack {
                     HeadingCompass(relativeDegrees: ranked?.relativeBearingDegrees)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(ranked?.distanceMeters.map(GeoMath.formatDistanceMeters) ?? (isVI ? "Chưa có GPS" : "No GPS yet"))
+                        Text(ranked?.distanceMeters.map(GeoMath.formatDistanceMeters) ?? HeritageLocale.string("No GPS yet"))
                             .font(.headline)
-                        Text(isVI ? "Từ snapshot iPhone" : "From iPhone snapshot")
+                        Text("From iPhone snapshot")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -44,7 +42,7 @@ struct WatchPlaceGlanceView: View {
             }
 
             if !people.isEmpty {
-                Section(isVI ? "Người" : "People") {
+                Section("People") {
                     ForEach(people) { person in
                         NavigationLink {
                             PersonGlanceView(snapshot: snapshot, person: person)
@@ -63,10 +61,10 @@ struct WatchPlaceGlanceView: View {
                     Button {
                         WatchMaps.navigate(to: place)
                     } label: {
-                        Label(isVI ? "Chỉ đường" : "Navigate", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
+                        Label("Navigate", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
                     }
                 } footer: {
-                    Text(isVI ? "Mở Apple Maps. Dữ liệu nơi chốn đã có sẵn trên Watch." : "Opens Apple Maps. Place data is already on this watch.")
+                    Text("Opens Apple Maps. Place data is already on this watch.")
                 }
             }
         }

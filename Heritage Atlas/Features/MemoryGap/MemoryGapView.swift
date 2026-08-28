@@ -65,7 +65,7 @@ struct MemoryGapView: View {
                             } label: {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(person.name)
-                                    Text(person.isLiving ? "Living" : "Remembered")
+                                    Text(person.isLiving ? LocalizedStringKey("Living") : LocalizedStringKey("Remembered"))
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }

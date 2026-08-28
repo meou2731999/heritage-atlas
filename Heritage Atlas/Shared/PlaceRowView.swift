@@ -13,8 +13,14 @@ struct PlaceRowView: View {
                 .foregroundStyle((role ?? .home).mapTint)
                 .frame(width: 28)
             VStack(alignment: .leading, spacing: 2) {
-                Text(place.name.isEmpty ? "Unnamed place" : place.name)
-                    .font(.body.weight(.medium))
+                Group {
+                    if place.name.isEmpty {
+                        Text("Unnamed place")
+                    } else {
+                        Text(place.name)
+                    }
+                }
+                .font(.body.weight(.medium))
                 if let subtitle, !subtitle.isEmpty {
                     Text(subtitle)
                         .font(.caption)

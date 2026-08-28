@@ -5,7 +5,6 @@ import UIKit
 struct FeaturedMomentsView: View {
     let snapshot: WatchSnapshot
 
-    private var vi: Bool { snapshot.localeKinship == .vi }
     private var memories: [WatchMemory] { snapshot.featuredMemories }
     private var moments: [WatchTimelineMoment] {
         WatchSnapshotExplorer.timelineMoments(in: snapshot)
@@ -14,9 +13,9 @@ struct FeaturedMomentsView: View {
     var body: some View {
         if memories.isEmpty && moments.isEmpty {
             ContentUnavailableView {
-                Label(vi ? "Chưa có kỷ niệm" : "No moments yet", systemImage: "star")
+                Label("No moments yet", systemImage: "star")
             } description: {
-                Text(vi ? "Ghi một câu chuyện, hoặc đánh dấu memory trên iPhone." : "Record a story, or feature a memory on iPhone.")
+                Text("Record a story, or feature a memory on iPhone.")
             }
         } else {
             TabView {
@@ -28,14 +27,14 @@ struct FeaturedMomentsView: View {
                 }
             }
             .tabViewStyle(.verticalPage)
-            .navigationTitle(vi ? "Kỷ niệm" : "Moments")
+            .navigationTitle("Moments")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
 
     private func featuredCard(_ memory: WatchMemory) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(vi ? "Nổi bật" : "Featured", systemImage: memory.kind.systemImageName)
+            Label("Featured", systemImage: memory.kind.systemImageName)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Text(memory.title)
@@ -110,6 +109,7 @@ enum MemoryDateGlance {
     }()
 
     static func string(_ date: Date) -> String {
-        formatter.string(from: date)
+        formatter.locale = HeritageLocale.locale
+        return formatter.string(from: date)
     }
 }

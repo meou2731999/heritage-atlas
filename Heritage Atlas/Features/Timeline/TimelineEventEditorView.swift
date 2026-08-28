@@ -45,7 +45,7 @@ struct TimelineEventEditorView: View {
                         HStack {
                             Text("Place")
                             Spacer()
-                            Text(selectedPlace?.name ?? "None")
+                            Text(selectedPlace?.name ?? HeritageLocale.string("None"))
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -70,7 +70,7 @@ struct TimelineEventEditorView: View {
                     }
                 }
             }
-            .navigationTitle(existing == nil ? "New moment" : "Edit moment")
+            .navigationTitle(existing == nil ? LocalizedStringKey("New moment") : LocalizedStringKey("Edit moment"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

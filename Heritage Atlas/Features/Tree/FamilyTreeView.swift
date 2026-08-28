@@ -88,7 +88,7 @@ struct FamilyTreeView: View {
                     AddRelationshipSheet(person: person)
                 }
             }
-            .confirmationDialog(jumpTarget?.title ?? "Jump", isPresented: $showJumpPicker, titleVisibility: .visible) {
+            .confirmationDialog(jumpTarget?.title ?? LocalizedStringKey("Jump"), isPresented: $showJumpPicker, titleVisibility: .visible) {
                 ForEach(jumpCandidates, id: \.id) { node in
                     Button(node.displayName) {
                         focusID = node.id
@@ -201,7 +201,7 @@ private enum JumpKind: String, Identifiable {
 
     var id: String { rawValue }
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .parents: "Parents"
         case .siblings: "Siblings"

@@ -3,11 +3,11 @@ import SwiftUI
 import UIKit
 
 extension MemoryKind {
-    var displayName: String { localizedName(.en) }
+    var displayName: String { localizedName(HeritageLocale.kinship) }
 }
 
 extension TimelineEventKind {
-    var displayName: String { localizedName(.en) }
+    var displayName: String { localizedName(HeritageLocale.kinship) }
 }
 
 enum MemoryQueries {
@@ -61,6 +61,7 @@ enum MemoryDateText {
 
     static func short(_ date: Date?) -> String? {
         guard let date else { return nil }
+        formatter.locale = HeritageLocale.locale
         return formatter.string(from: date)
     }
 }
@@ -77,8 +78,14 @@ struct MemoryRowView: View {
                 .frame(width: 28)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
-                    Text(memory.title.isEmpty ? "Untitled" : memory.title)
-                        .font(.body.weight(.medium))
+                    Group {
+                        if memory.title.isEmpty {
+                            Text("Untitled")
+                        } else {
+                            Text(memory.title)
+                        }
+                    }
+                    .font(.body.weight(.medium))
                     if memory.isFeatured {
                         Image(systemName: "star.fill")
                             .font(.caption2)
@@ -106,7 +113,7 @@ struct MemoryRowView: View {
             parts.append(date)
         }
         if memory.isFromWatch {
-            parts.append("Watch")
+            parts.append(HeritageLocale.string("Watch"))
         }
         return parts.joined(separator: " · ")
     }

@@ -80,9 +80,15 @@ struct HomeView: View {
             Text(Greeting.text())
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            Text(me?.displayName ?? "Your family")
-                .font(.largeTitle.weight(.semibold))
-                .lineLimit(2)
+            if let me {
+                Text(me.displayName)
+                    .font(.largeTitle.weight(.semibold))
+                    .lineLimit(2)
+            } else {
+                Text("Your family")
+                    .font(.largeTitle.weight(.semibold))
+                    .lineLimit(2)
+            }
             if me == nil, people.isEmpty {
                 Text("Add someone to begin. The first person can be you.")
                     .font(.callout)
@@ -96,11 +102,15 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text(familySummary)
                 .font(.title3.weight(.semibold))
-            Text(people.isEmpty
-                 ? "No one in the tree yet."
-                 : "Explore the family tree, search names, or look up how two people are related.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            Group {
+                if people.isEmpty {
+                    Text("No one in the tree yet.")
+                } else {
+                    Text("Explore the family tree, search names, or look up how two people are related.")
+                }
+            }
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
 
             Button {
                 session.exploreFamily(focus: settings?.mePersonID ?? people.first?.id)
@@ -131,8 +141,10 @@ struct HomeView: View {
     }
 
     private var familySummary: String {
-        let peopleWord = people.count == 1 ? "person" : "people"
-        return "Your Family · \(people.count) \(peopleWord) · \(generationCount) gen"
+        if people.count == 1 {
+            return HeritageLocale.string("Your Family · 1 person · \(generationCount) gen")
+        }
+        return HeritageLocale.string("Your Family · \(people.count) people · \(generationCount) gen")
     }
 
     private var recentsSection: some View {
@@ -291,7 +303,7 @@ struct HomeView: View {
                         NavigationLink {
                             MemoryDetailView(memoryID: memory.id)
                         } label: {
-                            MemoryRowView(memory: memory, subtitle: "Assign a person")
+                            MemoryRowView(memory: memory, subtitle: HeritageLocale.string("Assign a person"))
                                 .padding(.vertical, 8)
                         }
                         .buttonStyle(.plain)
@@ -462,9 +474,12 @@ struct HomeView: View {
     private var walkLabel: String {
         if let currentID = settings?.currentFamilyWalkID,
            let walk = walks.first(where: { $0.id == currentID }) {
-            return "Family Walk · \(walk.title)"
+            return HeritageLocale.string("Family Walk · \(walk.title)")
         }
-        return walks.isEmpty ? "Family Walk" : "Family Walk · \(walks.count)"
+        if walks.isEmpty {
+            return HeritageLocale.string("Family Walk")
+        }
+        return HeritageLocale.string("Family Walk · \(walks.count)")
     }
 
     private func nearbyCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {

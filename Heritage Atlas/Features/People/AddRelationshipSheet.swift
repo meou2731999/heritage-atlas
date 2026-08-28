@@ -14,7 +14,7 @@ enum RelativeRole: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .parent: "Parent"
         case .child: "Child"
@@ -90,7 +90,7 @@ struct AddRelationshipSheet: View {
 
                 Section("Choose existing") {
                     if candidates.isEmpty {
-                        Text(query.isEmpty ? "No other people yet." : "No matches.")
+                        Text(query.isEmpty ? LocalizedStringKey("No other people yet.") : LocalizedStringKey("No matches."))
                             .foregroundStyle(.secondary)
                     } else {
                         ForEach(candidates) { candidate in
@@ -134,7 +134,7 @@ struct AddRelationshipSheet: View {
 }
 
 struct PersonPickerSheet: View {
-    let title: String
+    let title: LocalizedStringKey
     var excludedIDs: Set<UUID> = []
     var allowNone = false
     var onSelect: (Person?) -> Void

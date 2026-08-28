@@ -6,15 +6,15 @@ enum MemorialReminderScheduler {
     static func refresh(events: [FamilyCalendarEvent], enabled: Bool, locale: KinshipLocale = .en) async {
         let center = UNUserNotificationCenter.current()
         if enabled == false {
-            await center.removeAllPendingNotificationRequests()
+            center.removeAllPendingNotificationRequests()
             return
         }
         let granted = await requestPermission()
         guard granted else {
-            await center.removeAllPendingNotificationRequests()
+            center.removeAllPendingNotificationRequests()
             return
         }
-        await center.removeAllPendingNotificationRequests()
+        center.removeAllPendingNotificationRequests()
         for event in events.prefix(64) {
             let content = UNMutableNotificationContent()
             content.title = event.kind.localizedName(locale)

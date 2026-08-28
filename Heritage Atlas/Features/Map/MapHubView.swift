@@ -51,7 +51,7 @@ struct MapHubView: View {
                 )
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle(session.mapMode == .cemetery ? "Cemetery" : "Family Map")
+            .navigationTitle(session.mapMode == .cemetery ? LocalizedStringKey("Cemetery") : LocalizedStringKey("Family Map"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -60,7 +60,7 @@ struct MapHubView: View {
                     } label: {
                         Image(systemName: "list.bullet")
                     }
-                    .accessibilityLabel(session.mapMode == .cemetery ? "Burial locations" : "Places")
+                    .accessibilityLabel(session.mapMode == .cemetery ? LocalizedStringKey("Burial locations") : LocalizedStringKey("Places"))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -158,7 +158,7 @@ struct FamilyMapCanvas: View {
             if cluster.isCluster {
                 return MapGlyph(
                     id: cluster.id,
-                    title: "\(cluster.count) places",
+                    title: HeritageLocale.string("\(cluster.count) places"),
                     coordinate: CLLocationCoordinate2D(
                         latitude: cluster.coordinate.latitude,
                         longitude: cluster.coordinate.longitude
@@ -175,7 +175,7 @@ struct FamilyMapCanvas: View {
             if let pin {
                 title = pin.memoryCount == 0 ? pin.name : "\(pin.name) · \(pin.memoryCount)"
             } else {
-                title = "Place"
+                title = HeritageLocale.string("Place")
             }
             return MapGlyph(
                 id: pin?.id.uuidString ?? cluster.id,
@@ -232,9 +232,7 @@ struct FamilyMapCanvas: View {
     }
 
     private var emptyBanner: some View {
-        Text(pins.isEmpty
-             ? "Add places with coordinates to see pins here."
-             : "")
+        Text("Add places with coordinates to see pins here.")
             .font(.subheadline)
             .multilineTextAlignment(.center)
             .padding(12)
@@ -292,7 +290,9 @@ private struct PlaceCalloutView: View {
                 Label(pin.name, systemImage: pin.primaryRole.systemImageName)
                 Text(pin.roles.map(\.displayName).joined(separator: " · "))
                     .foregroundStyle(.secondary)
-                Text("\(pin.personIDs.count) people · \(pin.memoryCount) \(pin.memoryCount == 1 ? "memory" : "memories")")
+                Text(pin.memoryCount == 1
+                     ? HeritageLocale.string("\(pin.personIDs.count) people · \(pin.memoryCount) memory")
+                     : HeritageLocale.string("\(pin.personIDs.count) people · \(pin.memoryCount) memories"))
                     .foregroundStyle(.secondary)
             }
             Section("People") {
@@ -314,7 +314,9 @@ private struct PlaceCalloutView: View {
                     Text("0 memories")
                         .foregroundStyle(.secondary)
                 } else {
-                    Text("\(linkedMemories.count) \(linkedMemories.count == 1 ? "memory" : "memories")")
+                    Text(linkedMemories.count == 1
+                         ? HeritageLocale.string("1 memory")
+                         : HeritageLocale.string("\(linkedMemories.count) memories"))
                         .foregroundStyle(.secondary)
                     ForEach(linkedMemories) { memory in
                         NavigationLink {

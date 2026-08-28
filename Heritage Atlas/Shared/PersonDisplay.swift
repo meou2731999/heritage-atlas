@@ -5,7 +5,7 @@ import SwiftUI
 extension Person {
     var displayName: String {
         if let nickname, !nickname.isEmpty { return nickname }
-        return fullName.isEmpty ? "Unnamed" : fullName
+        return fullName.isEmpty ? HeritageLocale.string("Unnamed") : fullName
     }
 
     var lifeYearsText: String {
@@ -61,6 +61,7 @@ enum PersonLifeSpan {
 
     static func longDate(_ date: Date?) -> String? {
         guard let date else { return nil }
+        dateFormatter.locale = HeritageLocale.locale
         return dateFormatter.string(from: date)
     }
 }
@@ -68,9 +69,9 @@ enum PersonLifeSpan {
 extension Gender {
     var displayName: String {
         switch self {
-        case .male: "Male"
-        case .female: "Female"
-        case .unknown: "Unknown"
+        case .male: HeritageLocale.string("Male")
+        case .female: HeritageLocale.string("Female")
+        case .unknown: HeritageLocale.string("Unknown")
         }
     }
 
@@ -95,11 +96,11 @@ extension KinshipLocale {
 extension KinRelationshipKind {
     var displayName: String {
         switch self {
-        case .parent: "Parent"
-        case .spouse: "Spouse"
-        case .partner: "Partner"
-        case .adoptiveParent: "Adoptive parent"
-        case .stepParent: "Step-parent"
+        case .parent: HeritageLocale.string("Parent")
+        case .spouse: HeritageLocale.string("Spouse")
+        case .partner: HeritageLocale.string("Partner")
+        case .adoptiveParent: HeritageLocale.string("Adoptive parent")
+        case .stepParent: HeritageLocale.string("Step-parent")
         }
     }
 }
@@ -117,7 +118,7 @@ enum PersonSearch {
 }
 
 enum Greeting {
-    static func text(now: Date = Date()) -> String {
+    static func text(now: Date = Date()) -> LocalizedStringKey {
         let hour = Calendar.current.component(.hour, from: now)
         switch hour {
         case 5..<12: return "Good morning"

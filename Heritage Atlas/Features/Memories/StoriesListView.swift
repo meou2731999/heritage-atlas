@@ -67,8 +67,8 @@ struct StoriesListView: View {
         var parts: [String] = []
         if let date = MemoryDateText.short(story.occurredOn) { parts.append(date) }
         if names.isEmpty == false { parts.append(names.prefix(3).joined(separator: ", ")) }
-        if story.isFromWatch { parts.append("From Watch") }
-        if story.body.isEmpty { parts.append("No transcript yet") }
+        if story.isFromWatch { parts.append(HeritageLocale.string("From Watch")) }
+        if story.body.isEmpty { parts.append(HeritageLocale.string("No transcript yet")) }
         return parts.joined(separator: " · ")
     }
 }

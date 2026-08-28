@@ -70,7 +70,10 @@ struct MemoryEditorView: View {
                             if transcribing {
                                 Label("Transcribing on device…", systemImage: "waveform")
                             } else {
-                                Label(draft.body.isEmpty ? "Transcribe on this iPhone" : "Re-transcribe on this iPhone", systemImage: "text.badge.waveform")
+                                Label(draft.body.isEmpty
+                                      ? LocalizedStringKey("Transcribe on this iPhone")
+                                      : LocalizedStringKey("Re-transcribe on this iPhone"),
+                                      systemImage: "text.badge.waveform")
                             }
                         }
                         .disabled(transcribing)
@@ -124,7 +127,7 @@ struct MemoryEditorView: View {
                     }
                 }
             }
-            .navigationTitle(existing == nil ? "New memory" : "Edit memory")
+            .navigationTitle(existing == nil ? LocalizedStringKey("New memory") : LocalizedStringKey("Edit memory"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -189,11 +192,13 @@ struct MemoryEditorView: View {
                         .frame(height: 180)
                 }
                 PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Text(previewImage == nil && existing?.mediaIDs.isEmpty != false ? "Add photo" : "Change photo")
+                    Text(previewImage == nil && existing?.mediaIDs.isEmpty != false
+                         ? LocalizedStringKey("Add photo")
+                         : LocalizedStringKey("Change photo"))
                 }
             }
         case .audio, .story:
-            Section(draft.kind == .story ? "Recording" : "Audio") {
+            Section(draft.kind == .story ? LocalizedStringKey("Recording") : LocalizedStringKey("Audio")) {
                 if recorder.isRecording {
                     Button("Stop") { recorder.stop() }
                     Text(Self.formatElapsed(recorder.elapsedSeconds))
@@ -262,7 +267,7 @@ struct MemoryEditorView: View {
     }
 
     private func eventLabel(_ event: TimelineEvent) -> String {
-        let name = event.person?.fullName ?? "Person"
+        let name = event.person?.fullName ?? HeritageLocale.string("Person")
         return "\(event.kind.displayName) · \(name)"
     }
 
@@ -283,7 +288,7 @@ struct MemoryEditorView: View {
             if let presetPersonID { draft.personIDs = [presetPersonID] }
             if let presetPlaceID { draft.placeIDs = [presetPlaceID] }
             if presetKind == .story {
-                draft.title = "Family story"
+                draft.title = HeritageLocale.string("Family story")
             }
         }
     }

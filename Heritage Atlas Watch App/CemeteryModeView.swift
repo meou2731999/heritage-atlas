@@ -7,8 +7,6 @@ struct CemeteryModeView: View {
     @State private var location = DeviceLocationSession()
     @State private var hapticTracker = ApproachHapticTracker()
 
-    private var isVI: Bool { snapshot.localeKinship == .vi }
-
     private var pins: [WatchPlace] {
         snapshot.cemeteryPins.isEmpty ? snapshot.burialPlaces : snapshot.cemeteryPins
     }
@@ -25,30 +23,26 @@ struct CemeteryModeView: View {
         List {
             if pins.isEmpty {
                 ContentUnavailableView(
-                    isVI ? "Chưa có nghĩa trang" : "No cemetery pins",
+                    "No cemetery pins",
                     systemImage: "leaf",
-                    description: Text(isVI
-                        ? "Gắn vai trò an táng trên iPhone. Watch dẫn đường từ snapshot, không cần mạng."
-                        : "Link burial places on iPhone. Guidance uses the local snapshot — no network.")
+                    description: Text("Link burial places on iPhone. Guidance uses the local snapshot — no network.")
                 )
             } else {
                 if location.isDenied {
                     Section {
-                        Text(isVI
-                             ? "Không có GPS. Danh sách tổ tiên vẫn hiện từ snapshot."
-                             : "No GPS. Ancestors still list from the snapshot.")
+                        Text("No GPS. Ancestors still list from the snapshot.")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
                 } else if !location.isAuthorized {
                     Section {
-                        Button(isVI ? "Bật vị trí" : "Enable location") {
+                        Button("Enable location") {
                             location.start(heading: true)
                         }
                     }
                 }
 
-                Section(isVI ? "An táng theo khoảng cách" : "Burials by distance") {
+                Section("Burials by distance") {
                     ForEach(ranked) { row in
                         NavigationLink {
                             WatchPlaceGlanceView(snapshot: snapshot, place: row.place, showsNavigate: true)
@@ -64,7 +58,7 @@ struct CemeteryModeView: View {
                                             .lineLimit(2)
                                     }
                                 }
-                                Text(row.distanceMeters.map(GeoMath.formatDistanceMeters) ?? (isVI ? "Chưa có GPS" : "No GPS yet"))
+                                Text(row.distanceMeters.map(GeoMath.formatDistanceMeters) ?? HeritageLocale.string("No GPS yet"))
                                     .font(.caption2.weight(.semibold))
                             }
                             .padding(.vertical, 2)
@@ -73,7 +67,7 @@ struct CemeteryModeView: View {
                 }
             }
         }
-        .navigationTitle(isVI ? "Nghĩa trang" : "Cemetery")
+        .navigationTitle("Cemetery")
         .onAppear {
             location.start(heading: true)
         }
@@ -88,7 +82,7 @@ struct CemeteryModeView: View {
     private func peopleSummary(_ place: WatchPlace) -> String {
         let people = WatchSnapshotExplorer.people(for: place, in: snapshot)
         if people.isEmpty {
-            return isVI ? "Chưa gắn người" : "No people linked"
+            return HeritageLocale.string("No people linked")
         }
         let labels = people.map { person in
             if let term = WatchSnapshotExplorer.relationship(for: person.id, in: snapshot)?.term {

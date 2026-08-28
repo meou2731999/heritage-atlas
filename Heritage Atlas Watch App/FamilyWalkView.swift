@@ -7,8 +7,6 @@ struct FamilyWalkView: View {
     @State private var location = DeviceLocationSession()
     @State private var hapticTracker = ApproachHapticTracker()
 
-    private var isVI: Bool { snapshot.localeKinship == .vi }
-
     private var walk: WatchFamilyWalk? { snapshot.currentWalk }
 
     private var stops: [WatchPlace] {
@@ -56,21 +54,19 @@ struct FamilyWalkView: View {
         List {
             if walk == nil || stops.isEmpty {
                 ContentUnavailableView(
-                    isVI ? "Chưa có Family Walk" : "No Family Walk",
+                    "No Family Walk",
                     systemImage: "figure.walk",
-                    description: Text(isVI
-                        ? "Tạo tour trên iPhone và chọn Use on Apple Watch."
-                        : "Create a tour on iPhone and choose Use on Apple Watch.")
+                    description: Text("Create a tour on iPhone and choose Use on Apple Watch.")
                 )
             } else {
                 Section {
                     Text(walk?.title ?? "")
                         .font(.headline)
                     if progress.isComplete {
-                        Text(isVI ? "Đã đến mọi điểm" : "You reached every stop")
+                        Text("You reached every stop")
                             .foregroundStyle(.secondary)
                     } else if let herePlace {
-                        Text(isVI ? "Bạn đang ở đây" : "You’re here")
+                        Text("You’re here")
                             .font(.headline)
                         currentStopCard(herePlace)
                     } else if let currentPlace {
@@ -79,7 +75,7 @@ struct FamilyWalkView: View {
                 }
 
                 if let story = currentStory {
-                    Section(isVI ? "Câu chuyện" : "Story") {
+                    Section("Story") {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(story.title)
                             if let preview = story.bodyPreview {
@@ -95,7 +91,7 @@ struct FamilyWalkView: View {
                 }
 
                 if let nextPlace, progress.isComplete == false {
-                    Section(isVI ? "Tiếp theo" : "Next") {
+                    Section("Next") {
                         NavigationLink {
                             WatchPlaceGlanceView(snapshot: snapshot, place: nextPlace, showsNavigate: true)
                         } label: {
@@ -104,7 +100,7 @@ struct FamilyWalkView: View {
                     }
                 }
 
-                Section(isVI ? "Các điểm" : "Stops") {
+                Section("Stops") {
                     ForEach(Array(progress.stops.enumerated()), id: \.element.id) { _, state in
                         if let place = stops.first(where: { $0.id == state.placeID }) {
                             NavigationLink {
@@ -116,15 +112,15 @@ struct FamilyWalkView: View {
                                     Text(place.name)
                                     Spacer()
                                     if progress.hereStopID == state.placeID {
-                                        Text(isVI ? "Ở đây" : "Here")
+                                        Text("Here")
                                             .font(.caption2)
                                             .foregroundStyle(.green)
                                     } else if state.placeID == progress.upcomingStopID {
-                                        Text(isVI ? "Tiếp" : "Next")
+                                        Text("Next")
                                             .font(.caption2)
                                             .foregroundStyle(.secondary)
                                     } else if state.isCurrent, progress.youAreHere == false {
-                                        Text(isVI ? "Hiện tại" : "Now")
+                                        Text("Now")
                                             .font(.caption2)
                                             .foregroundStyle(.secondary)
                                     } else if state.isArrived {
@@ -138,7 +134,7 @@ struct FamilyWalkView: View {
                 }
             }
         }
-        .navigationTitle(isVI ? "Đi bộ" : "Walk")
+        .navigationTitle("Walk")
         .onAppear {
             location.start(heading: true)
         }
@@ -162,9 +158,9 @@ struct FamilyWalkView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(place.name)
                         .font(.headline)
-                    Text(ranked?.distanceMeters.map(GeoMath.formatDistanceMeters) ?? (isVI ? "Chưa có GPS" : "No GPS yet"))
+                    Text(ranked?.distanceMeters.map(GeoMath.formatDistanceMeters) ?? HeritageLocale.string("No GPS yet"))
                         .font(.caption.weight(.semibold))
-                    Text(isVI ? "Rung khi bạn đến" : "Haptic when you arrive")
+                    Text("Haptic when you arrive")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }

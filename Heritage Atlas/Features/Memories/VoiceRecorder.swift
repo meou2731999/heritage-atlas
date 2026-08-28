@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import HeritageAtlasCore
 import Observation
 import SwiftUI
 
@@ -17,7 +18,7 @@ final class VoiceRecorder {
         errorMessage = nil
         let granted = await Self.requestPermission()
         guard granted else {
-            errorMessage = "Microphone access is off. Enable it in Settings to record a story."
+            errorMessage = HeritageLocale.string("Microphone access is off. Enable it in Settings to record a story.")
             return false
         }
         do {
@@ -97,7 +98,7 @@ struct MemoryAudioPlayer: View {
         Button {
             toggle()
         } label: {
-            Label(isPlaying ? "Pause" : "Play", systemImage: isPlaying ? "pause.fill" : "play.fill")
+            Label(isPlaying ? LocalizedStringKey("Pause") : LocalizedStringKey("Play"), systemImage: isPlaying ? "pause.fill" : "play.fill")
         }
         .onDisappear {
             player?.stop()

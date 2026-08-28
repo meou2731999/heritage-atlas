@@ -8,7 +8,7 @@ struct FavoritesView: View {
         List {
             if snapshot.favorites.isEmpty {
                 ContentUnavailableView(
-                    snapshot.localeKinship == .vi ? "Chưa có yêu thích" : "No favorites",
+                    "No favorites",
                     systemImage: "heart"
                 )
             } else {
@@ -24,7 +24,7 @@ struct FavoritesView: View {
                 }
             }
         }
-        .navigationTitle(snapshot.localeKinship == .vi ? "Yêu thích" : "Favorites")
+        .navigationTitle("Favorites")
     }
 }
 

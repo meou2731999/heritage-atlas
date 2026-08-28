@@ -47,7 +47,7 @@ struct PersonPlaceEditorView: View {
                         HStack {
                             Text("Person")
                             Spacer()
-                            Text(selectedPerson?.displayName ?? "Choose")
+                            Text(selectedPerson?.displayName ?? HeritageLocale.string("Choose"))
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -61,7 +61,7 @@ struct PersonPlaceEditorView: View {
                         HStack {
                             Text("Place")
                             Spacer()
-                            Text(selectedPlace?.name ?? "Choose")
+                            Text(selectedPlace?.name ?? HeritageLocale.string("Choose"))
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -87,7 +87,7 @@ struct PersonPlaceEditorView: View {
                         .keyboardType(.numberPad)
                 }
             }
-            .navigationTitle(existing == nil ? "Link place" : "Edit link")
+            .navigationTitle(existing == nil ? LocalizedStringKey("Link place") : LocalizedStringKey("Edit link"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

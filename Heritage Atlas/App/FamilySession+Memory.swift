@@ -189,11 +189,12 @@ extension FamilySession {
             await enqueueMediaUpload(id: write.id)
 
             let formatter = DateFormatter()
+            formatter.locale = HeritageLocale.locale
             formatter.dateStyle = .medium
             formatter.timeStyle = .short
             let memory = Memory(
                 kind: .story,
-                title: "Watch story · \(formatter.string(from: message.recordedAt))",
+                title: HeritageLocale.string("Watch story · \(formatter.string(from: message.recordedAt))"),
                 occurredOn: message.recordedAt,
                 personIDs: message.personID.map { [$0] } ?? [],
                 mediaIDs: [write.id],
