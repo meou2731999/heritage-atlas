@@ -271,21 +271,21 @@ public enum FamilyCalendar: Sendable {
         case .birthday:
             title = person.displayName
             if let years {
-                subtitle = locale == .vi ? "Sinh nhật · \(years) tuổi" : "Birthday · turns \(years)"
+                subtitle = HeritageLocale.string("Birthday · turns \(years)", locale: locale)
             } else {
                 subtitle = kind.localizedName(locale)
             }
         case .deathAnniversary:
             title = person.displayName
             if let years {
-                subtitle = locale == .vi ? "Giỗ · \(years) năm" : "Memorial · \(years) years"
+                subtitle = HeritageLocale.string("Memorial · \(years) years", locale: locale)
             } else {
                 subtitle = kind.localizedName(locale)
             }
         case .wedding:
             title = person.displayName
             if let years {
-                subtitle = locale == .vi ? "Ngày cưới · \(years) năm" : "Wedding · \(years) years"
+                subtitle = HeritageLocale.string("Wedding · \(years) years", locale: locale)
             } else {
                 subtitle = kind.localizedName(locale)
             }

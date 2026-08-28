@@ -81,7 +81,7 @@ struct LifeTimelineView: View {
                 .foregroundStyle(Color.accentColor)
                 .frame(width: 28)
             VStack(alignment: .leading, spacing: 4) {
-                Text(event.title)
+                Text(event.kind.resolvedTitle(event.title, locale: HeritageLocale.kinship))
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
                 Text(subtitle(event))

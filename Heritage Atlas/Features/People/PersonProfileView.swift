@@ -268,7 +268,7 @@ struct PersonProfileView: View {
         if person.isLiving == false || burial != nil {
             Section("Memorial") {
                 if let death = PersonLifeSpan.longDate(person.deathDate) {
-                    detailRow("Giỗ", death)
+                    detailRow("Memorial", death)
                 }
                 if let burial, let place = burial.place {
                     NavigationLink {
@@ -297,6 +297,7 @@ struct PersonProfileView: View {
     private func memorySection(_ person: Person) -> some View {
         let linked = MemoryQueries.forPerson(person.id, in: memories)
         let photos = MemoryQueries.photos(for: person.id, in: memories)
+        let photoCount = photos.count + (person.photoMediaID == nil ? 0 : 1)
         Section {
             NavigationLink {
                 LifeTimelineView(personID: person.id)
@@ -306,7 +307,11 @@ struct PersonProfileView: View {
             NavigationLink {
                 PersonGalleryView(personID: person.id)
             } label: {
-                Label(photos.isEmpty && person.photoMediaID == nil ? LocalizedStringKey("Gallery") : LocalizedStringKey("Gallery · \(photos.count + (person.photoMediaID == nil ? 0 : 1))"), systemImage: "photo.on.rectangle")
+                if photoCount == 0 {
+                    Label("Gallery", systemImage: "photo.on.rectangle")
+                } else {
+                    Label("Gallery · \(photoCount)", systemImage: "photo.on.rectangle")
+                }
             }
             if linked.isEmpty {
                 Text("No memories yet.")

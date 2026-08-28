@@ -100,12 +100,16 @@ struct RelationshipLookupView: View {
                     pathGlance(path)
                     HStack(alignment: .top, spacing: 16) {
                         callCard(
-                            title: fromIsMe ? LocalizedStringKey("You call them") : LocalizedStringKey("\(fromName) calls"),
+                            title: fromIsMe
+                                ? HeritageLocale.string("You call them")
+                                : HeritageLocale.string("\(fromName) calls"),
                             subtitle: toName,
                             value: naming.youCallThem
                         )
                         callCard(
-                            title: fromIsMe ? LocalizedStringKey("They call you") : LocalizedStringKey("\(toName) calls"),
+                            title: fromIsMe
+                                ? HeritageLocale.string("They call you")
+                                : HeritageLocale.string("\(toName) calls"),
                             subtitle: fromIsMe ? toName : fromName,
                             value: naming.theyCallYou
                         )
@@ -153,9 +157,9 @@ struct RelationshipLookupView: View {
             .foregroundStyle(.secondary)
     }
 
-    private func callCard(title: LocalizedStringKey, subtitle: String, value: String) -> some View {
+    private func callCard(title: String, subtitle: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
+            Text(verbatim: title)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
             Text(value)

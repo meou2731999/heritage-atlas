@@ -65,7 +65,7 @@ struct TimelineEventDraft {
     var resolvedTitle: String {
         let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty == false { return trimmed }
-        return kind.localizedName(.en)
+        return kind.localizedName(HeritageLocale.kinship)
     }
 }
 
@@ -263,14 +263,14 @@ extension FamilySession {
             if let existing = events.first(where: { $0.kind == .born }) {
                 existing.date = birth
                 if existing.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    existing.title = TimelineEventKind.born.localizedName(.en)
+                    existing.title = TimelineEventKind.born.localizedName(HeritageLocale.kinship)
                 }
             } else {
                 context.insert(
                     TimelineEvent(
                         person: person,
                         date: birth,
-                        title: TimelineEventKind.born.localizedName(.en),
+                        title: TimelineEventKind.born.localizedName(HeritageLocale.kinship),
                         kind: .born
                     )
                 )
@@ -280,14 +280,14 @@ extension FamilySession {
             if let existing = events.first(where: { $0.kind == .died }) {
                 existing.date = death
                 if existing.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    existing.title = TimelineEventKind.died.localizedName(.en)
+                    existing.title = TimelineEventKind.died.localizedName(HeritageLocale.kinship)
                 }
             } else {
                 context.insert(
                     TimelineEvent(
                         person: person,
                         date: death,
-                        title: TimelineEventKind.died.localizedName(.en),
+                        title: TimelineEventKind.died.localizedName(HeritageLocale.kinship),
                         kind: .died
                     )
                 )

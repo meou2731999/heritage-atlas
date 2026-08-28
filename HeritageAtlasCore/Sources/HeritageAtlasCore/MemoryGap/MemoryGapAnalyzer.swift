@@ -118,27 +118,32 @@ public enum MemoryGapAnalyzer: Sendable {
 
     public static func prompt(for person: MemoryGapPerson, locale: KinshipLocale) -> String {
         if let home = person.childhoodHomeName, home.isEmpty == false {
-            return locale == .vi
-                ? "Nhà thời thơ ấu của \(person.name) ở \(home) như thế nào?"
-                : "What was \(person.name)’s childhood home in \(home) like?"
+            return HeritageLocale.string(
+                "What was \(person.name)’s childhood home in \(home) like?",
+                locale: locale
+            )
         }
         if let occupation = person.occupation, occupation.isEmpty == false {
-            return locale == .vi
-                ? "Kể một chuyện về thời \(person.name) làm \(occupation)."
-                : "Tell a story from when \(person.name) was a \(occupation)."
+            return HeritageLocale.string(
+                "Tell a story from when \(person.name) was a \(occupation).",
+                locale: locale
+            )
         }
         if person.isLiving == false, let burial = person.burialPlaceName, burial.isEmpty == false {
-            return locale == .vi
-                ? "Bạn nhớ gì mỗi lần ra \(burial) thăm \(person.name)?"
-                : "What do you remember from visits to \(burial) for \(person.name)?"
+            return HeritageLocale.string(
+                "What do you remember from visits to \(burial) for \(person.name)?",
+                locale: locale
+            )
         }
         if person.isLiving == false {
-            return locale == .vi
-                ? "Câu chuyện nào về \(person.name) chỉ bạn mới biết?"
-                : "What’s a story only you know about \(person.name)?"
+            return HeritageLocale.string(
+                "What’s a story only you know about \(person.name)?",
+                locale: locale
+            )
         }
-        return locale == .vi
-            ? "Ghi một câu chuyện về \(person.name) trước khi quên."
-            : "Record a story about \(person.name) before it’s forgotten."
+        return HeritageLocale.string(
+            "Record a story about \(person.name) before it’s forgotten.",
+            locale: locale
+        )
     }
 }

@@ -74,7 +74,7 @@ public enum WatchFeaturedMoments {
                 personID: person?.id ?? UUID(),
                 personName: displayName(for: person),
                 date: event.date,
-                title: event.title.isEmpty ? event.kind.localizedName(locale) : event.title,
+                title: event.kind.resolvedTitle(event.title, locale: locale),
                 kind: event.kind,
                 placeName: event.place?.name,
                 memoryTitle: linkedTitle,

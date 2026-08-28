@@ -4,8 +4,8 @@ import SwiftUI
 struct FamilyWalkView: View {
     let snapshot: WatchSnapshot
 
-    @State private var location = DeviceLocationSession()
-    @State private var hapticTracker = ApproachHapticTracker()
+    @State private var location: DeviceLocationSession = DeviceLocationSession()
+    @State private var hapticTracker: ApproachHapticTracker = ApproachHapticTracker()
 
     private var walk: WatchFamilyWalk? { snapshot.currentWalk }
 
@@ -14,10 +14,10 @@ struct FamilyWalkView: View {
     }
 
     private var distances: [UUID: Double] {
-        guard let here = location.coordinate else { return [:] }
+        guard let here: GeoPoint = location.coordinate else { return [:] }
         var result: [UUID: Double] = [:]
-        for place in stops {
-            if let point = place.geoPoint {
+        for place: WatchPlace in stops {
+            if let point: GeoPoint = place.geoPoint {
                 result[place.id] = GeoMath.distanceMeters(from: here, to: point)
             }
         }
@@ -29,17 +29,17 @@ struct FamilyWalkView: View {
     }
 
     private var herePlace: WatchPlace? {
-        guard let id = progress.hereStopID else { return nil }
+        guard let id: UUID = progress.hereStopID else { return nil }
         return stops.first { $0.id == id }
     }
 
     private var currentPlace: WatchPlace? {
-        guard let id = progress.currentStopID else { return nil }
+        guard let id: UUID = progress.currentStopID else { return nil }
         return stops.first { $0.id == id }
     }
 
     private var nextPlace: WatchPlace? {
-        guard let id = progress.upcomingStopID else { return nil }
+        guard let id: UUID = progress.upcomingStopID else { return nil }
         return stops.first { $0.id == id }
     }
 
@@ -74,7 +74,7 @@ struct FamilyWalkView: View {
                     }
                 }
 
-                if let story = currentStory {
+                if let story: WatchMemory = currentStory {
                     Section("Story") {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(story.title)
@@ -90,7 +90,7 @@ struct FamilyWalkView: View {
                     }
                 }
 
-                if let nextPlace, progress.isComplete == false {
+                if let nextPlace: WatchPlace, progress.isComplete == false {
                     Section("Next") {
                         NavigationLink {
                             WatchPlaceGlanceView(snapshot: snapshot, place: nextPlace, showsNavigate: true)
@@ -102,7 +102,7 @@ struct FamilyWalkView: View {
 
                 Section("Stops") {
                     ForEach(Array(progress.stops.enumerated()), id: \.element.id) { _, state in
-                        if let place = stops.first(where: { $0.id == state.placeID }) {
+                        if let place: WatchPlace = stops.first(where: { $0.id == state.placeID }) {
                             NavigationLink {
                                 WatchPlaceGlanceView(snapshot: snapshot, place: place, showsNavigate: true)
                             } label: {
@@ -147,7 +147,7 @@ struct FamilyWalkView: View {
     }
 
     private func currentStopCard(_ place: WatchPlace) -> some View {
-        let ranked = WatchSnapshotExplorer.rankedPlaces(
+        let ranked: WatchDistantPlace? = WatchSnapshotExplorer.rankedPlaces(
             [place],
             from: location.coordinate,
             headingDegrees: location.headingDegrees
@@ -171,7 +171,7 @@ struct FamilyWalkView: View {
 
     private func fireHaptics() {
         guard distances.isEmpty == false else { return }
-        for event in hapticTracker.events(for: distances) {
+        for event: ApproachEvent in hapticTracker.events(for: distances) {
             WatchApproachHaptics.play(event.band)
         }
     }

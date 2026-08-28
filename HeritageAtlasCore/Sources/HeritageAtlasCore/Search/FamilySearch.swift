@@ -187,7 +187,7 @@ public enum FamilySearch: Sendable {
         let needle = TextNormalize.folded(trimmed)
         let people = context.people.filter { matches($0, needle: needle) }.map(personHit)
         let places = context.places.filter { matches($0, needle: needle) }.map(placeHit)
-        let memories = context.memories.filter { matches($0, needle: needle) }.map(memoryHit)
+        let memories = context.memories.filter { matches($0, needle: needle) }.map { memoryHit($0, locale: locale) }
         return FamilySearchResult(people: people, places: places, memories: memories)
     }
 
@@ -200,26 +200,28 @@ public enum FamilySearch: Sendable {
 
         if let placeHint = livingQueryPlace(from: folded) {
             return answer(
-                title: locale == .vi ? "Ai sống ở đây?" : "Who lives here?",
+                title: HeritageLocale.string("Who lives here?", locale: locale),
                 roles: liveRoles,
                 placeHint: placeHint,
                 in: context,
-                empty: locale == .vi ? "Không thấy ai gắn với nơi này." : "No one is linked to this place."
+                locale: locale,
+                empty: HeritageLocale.string("No one is linked to this place.", locale: locale)
             )
         }
 
         if let placeHint = burialQueryPlace(from: folded) {
             return answer(
-                title: locale == .vi ? "Ai được chôn ở đây?" : "Who is buried here?",
+                title: HeritageLocale.string("Who is buried here?", locale: locale),
                 roles: burialRoles,
                 placeHint: placeHint,
                 in: context,
-                empty: locale == .vi ? "Chưa có chỗ an táng khớp." : "No burial matches this place."
+                locale: locale,
+                empty: HeritageLocale.string("No burial matches this place.", locale: locale)
             )
         }
 
         if let kinship = kinshipMatches(folded, in: context) {
-            let title = locale == .vi ? "Xưng hô" : "Kinship"
+            let title = HeritageLocale.string("Kinship", locale: locale)
             return FamilySearchResult(
                 answerTitle: title,
                 answerHits: kinship,
@@ -235,6 +237,7 @@ public enum FamilySearch: Sendable {
         roles: Set<PlaceRole>,
         placeHint: String,
         in context: FamilySearchContext,
+        locale: KinshipLocale,
         empty: String
     ) -> FamilySearchResult {
         let places = matchingPlaces(hint: placeHint, in: context)
@@ -249,7 +252,7 @@ public enum FamilySearch: Sendable {
                 FamilySearchHit(
                     kind: .person,
                     title: person.displayName,
-                    subtitle: "\(link.role.localizedName(.en)) · \(placeName)",
+                    subtitle: "\(link.role.localizedName(locale)) · \(placeName)",
                     personID: person.id
                 )
             )
@@ -410,10 +413,10 @@ public enum FamilySearch: Sendable {
         )
     }
 
-    private static func memoryHit(_ memory: FamilySearchMemory) -> FamilySearchHit {
+    private static func memoryHit(_ memory: FamilySearchMemory, locale: KinshipLocale) -> FamilySearchHit {
         FamilySearchHit(
             kind: .memory,
-            title: memory.title.isEmpty ? "Untitled" : memory.title,
+            title: memory.title.isEmpty ? HeritageLocale.string("Untitled", locale: locale) : memory.title,
             subtitle: String(memory.body.prefix(80)),
             memoryID: memory.id
         )

@@ -174,7 +174,22 @@ public enum HeritageLocale: Sendable {
 
     public static var locale: Locale { kinship.locale }
 
-    public static func string(_ key: String.LocalizationValue) -> String {
-        String(localized: key, locale: locale)
+    public static func string(
+        _ key: String.LocalizationValue,
+        locale kinshipLocale: KinshipLocale = kinship
+    ) -> String {
+        String(localized: key, bundle: .main, locale: kinshipLocale.locale)
+    }
+}
+
+extension TimelineEventKind {
+    /// Uses the current locale for canned born/died titles stored in another language.
+    public func resolvedTitle(_ stored: String, locale: KinshipLocale) -> String {
+        let trimmed = stored.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty { return localizedName(locale) }
+        if KinshipLocale.allCases.contains(where: { localizedName($0) == trimmed }) {
+            return localizedName(locale)
+        }
+        return trimmed
     }
 }
