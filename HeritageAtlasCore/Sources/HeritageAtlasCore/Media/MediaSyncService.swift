@@ -3,7 +3,7 @@ import CloudKit
 #endif
 import Foundation
 
-/// Syncs media binaries as CloudKit `CKAsset`s. Watch never runs this path.
+/// Syncs media binaries as CloudKit `CKAsset`s when CloudKit is enabled. Watch never runs this path.
 public actor MediaSyncService {
     public static let recordType = "MediaAsset"
 

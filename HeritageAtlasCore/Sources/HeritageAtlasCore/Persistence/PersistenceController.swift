@@ -2,13 +2,14 @@ import Foundation
 import SwiftData
 
 public enum PersistenceController: Sendable {
-    /// iPhone source of truth. Works fully offline. CloudKit is attached only when iCloud is available;
+    /// iPhone source of truth. Works fully offline. CloudKit is attached only when
+    /// `CloudKitAvailability.isCloudKitSyncEnabled` is on and iCloud is available;
     /// if CloudKit configuration fails, the same local store is opened with `cloudKitDatabase: .none`.
     public static func makePhoneContainer() -> ModelContainer {
         prepareApplicationSupportDirectory()
         let schema = Schema(HeritageAtlasSchema.phoneModels)
 
-        if CloudKitAvailability.isICloudAccountAvailable {
+        if CloudKitAvailability.isCloudKitSyncEnabled, CloudKitAvailability.isICloudAccountAvailable {
             do {
                 return try ModelContainer(
                     for: schema,

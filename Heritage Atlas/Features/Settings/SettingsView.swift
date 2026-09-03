@@ -28,6 +28,25 @@ struct SettingsView: View {
         return walks.first { $0.id == id }?.title ?? HeritageLocale.string("None")
     }
 
+    private var syncStatusLabel: String {
+        if !CloudKitAvailability.isCloudKitSyncEnabled {
+            return HeritageLocale.string("Paused")
+        }
+        return CloudKitAvailability.isICloudAccountAvailable
+            ? HeritageLocale.string("Available")
+            : HeritageLocale.string("Off this device")
+    }
+
+    private var syncFooter: String {
+        if !CloudKitAvailability.isCloudKitSyncEnabled {
+            return HeritageLocale.string("iCloud sync is paused. Family data stays on this device — the tree, search, and relationships work fully offline.")
+        }
+        if CloudKitAvailability.isICloudAccountAvailable {
+            return HeritageLocale.string("Family data can sync between your devices when iCloud is on. Heritage Atlas never requires sign-in.")
+        }
+        return HeritageLocale.string("Working locally. iCloud is optional — the family tree, search, and relationships work fully offline.")
+    }
+
     var body: some View {
         NavigationStack(path: $path) {
             List {
@@ -114,20 +133,12 @@ struct SettingsView: View {
                     HStack {
                         Text("iCloud")
                         Spacer()
-                        Text(CloudKitAvailability.isICloudAccountAvailable
-                             ? HeritageLocale.string("Available")
-                             : HeritageLocale.string("Off this device"))
+                        Text(syncStatusLabel)
                             .foregroundStyle(.secondary)
                     }
-                    Group {
-                        if CloudKitAvailability.isICloudAccountAvailable {
-                            Text("Family data can sync between your devices when iCloud is on. Heritage Atlas never requires sign-in.")
-                        } else {
-                            Text("Working locally. iCloud is optional — the family tree, search, and relationships work fully offline.")
-                        }
-                    }
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    Text(syncFooter)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 } header: {
                     Text("Sync")
                 }
