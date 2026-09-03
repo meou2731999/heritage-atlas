@@ -5,6 +5,7 @@ struct FamilyTreeCanvasView: View {
     let layout: TreeLayout
     let focusID: UUID
     let photoIDs: [UUID: UUID]
+    var recenterID: Int = 0
     var onFocus: (UUID) -> Void
     var onOpenProfile: (UUID) -> Void
     var onToggleCollapse: (UUID) -> Void
@@ -54,17 +55,24 @@ struct FamilyTreeCanvasView: View {
             .gesture(dragGesture)
             .simultaneousGesture(magnifyGesture)
             .onTapGesture(count: 2) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    scale = 1
-                    pan = .zero
-                }
+                resetCamera()
             }
             .onChange(of: focusID) { _, _ in
                 withAnimation(.easeInOut(duration: 0.25)) {
                     pan = .zero
                 }
             }
+            .onChange(of: recenterID) { _, _ in
+                resetCamera()
+            }
             .clipped()
+        }
+    }
+
+    private func resetCamera() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            scale = 1
+            pan = .zero
         }
     }
 

@@ -13,8 +13,11 @@ struct FamilyTreeView: View {
     @State private var collapsedIDs: Set<UUID> = []
     @State private var editorMode: PersonEditorMode?
     @State private var showAddRelationship = false
+    @State private var showPersonPicker = false
     @State private var jumpTarget: JumpKind?
     @State private var showJumpPicker = false
+    @State private var canvasRecenterID = 0
+    @State private var pendingMenuCommand: TreeMenuCommand?
 
     private var settings: AppSettings? { settingsRows.first }
     private var photoIDs: [UUID: UUID] {
@@ -39,6 +42,17 @@ struct FamilyTreeView: View {
         )
     }
 
+    /// People with no relationships, hidden because the canvas only draws the focused cluster.
+    private var unlinkedPeople: [Person] {
+        people
+            .filter { person in
+                person.id != resolvedFocusID && (session.graph.adjacency[person.id] ?? []).isEmpty
+            }
+            .sorted { lhs, rhs in
+                lhs.displayName.localizedCaseInsensitiveCompare(rhs.displayName) == .orderedAscending
+            }
+    }
+
     var body: some View {
         NavigationStack(path: $path) {
             Group {
@@ -50,9 +64,9 @@ struct FamilyTreeView: View {
                             layout: layout,
                             focusID: resolvedFocusID,
                             photoIDs: photoIDs,
+                            recenterID: canvasRecenterID,
                             onFocus: { id in
-                                focusID = id
-                                session.treeFocusID = id
+                                focusPerson(id, resetCamera: false)
                             },
                             onOpenProfile: { id in
                                 path.append(id)
@@ -65,12 +79,7 @@ struct FamilyTreeView: View {
                                 }
                             }
                         )
-                        TreeJumpBar(
-                            graph: session.graph,
-                            focusID: resolvedFocusID
-                        ) { kind in
-                            jump(kind, around: resolvedFocusID)
-                        }
+                        treeBottomChrome(focusID: resolvedFocusID)
                     }
                 }
             }
@@ -81,18 +90,28 @@ struct FamilyTreeView: View {
                 PersonProfileView(personID: id)
             }
             .sheet(item: $editorMode) { mode in
-                PersonEditorView(mode: mode)
+                PersonEditorView(mode: mode) { savedID in
+                    if case .create = mode {
+                        focusPerson(savedID)
+                    }
+                }
             }
             .sheet(isPresented: $showAddRelationship) {
                 if let person = currentPerson {
                     AddRelationshipSheet(person: person)
                 }
             }
+            .sheet(isPresented: $showPersonPicker) {
+                PersonPickerSheet(title: "Find person") { person in
+                    if let person {
+                        focusPerson(person.id)
+                    }
+                }
+            }
             .confirmationDialog(jumpTarget?.title ?? LocalizedStringKey("Jump"), isPresented: $showJumpPicker, titleVisibility: .visible) {
                 ForEach(jumpCandidates, id: \.id) { node in
                     Button(node.displayName) {
-                        focusID = node.id
-                        session.treeFocusID = node.id
+                        focusPerson(node.id)
                     }
                 }
                 Button("Cancel", role: .cancel) {}
@@ -108,7 +127,29 @@ struct FamilyTreeView: View {
                     focusID = newValue
                 }
             }
+            .onChange(of: pendingMenuCommand) { _, command in
+                guard let command else { return }
+                perform(command.action)
+            }
         }
+    }
+
+    @ViewBuilder
+    private func treeBottomChrome(focusID: UUID) -> some View {
+        VStack(spacing: 0) {
+            if unlinkedPeople.isEmpty == false {
+                UnlinkedPeopleBar(people: unlinkedPeople) { id in
+                    focusPerson(id)
+                }
+            }
+            TreeJumpBar(
+                graph: session.graph,
+                focusID: focusID
+            ) { kind in
+                jump(kind, around: focusID)
+            }
+        }
+        .background(.bar)
     }
 
     private var currentPerson: Person? {
@@ -133,18 +174,20 @@ struct FamilyTreeView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Menu {
-                Button("Recenter", systemImage: "scope") {
-                    focusID = session.treeFocusID ?? settings?.mePersonID ?? focusID
-                    session.treeFocusID = focusID
+                Button("Find person", systemImage: "magnifyingglass") {
+                    pendingMenuCommand = TreeMenuCommand(.findPerson)
                 }
-                if let meID = settings?.mePersonID {
+                Divider()
+                Button("Recenter", systemImage: "scope") {
+                    pendingMenuCommand = TreeMenuCommand(.recenter)
+                }
+                if settings?.mePersonID != nil {
                     Button("Focus Me", systemImage: "person.crop.circle") {
-                        focusID = meID
-                        session.treeFocusID = meID
+                        pendingMenuCommand = TreeMenuCommand(.focusMe)
                     }
                 }
                 Button("Expand all", systemImage: "arrow.up.left.and.arrow.down.right") {
-                    collapsedIDs.removeAll()
+                    pendingMenuCommand = TreeMenuCommand(.expandAll)
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
@@ -184,12 +227,49 @@ struct FamilyTreeView: View {
     private func jump(_ kind: JumpKind, around focus: UUID) {
         let people = kind.people(in: session.graph, focusID: focus)
         if people.count == 1, let only = people.first {
-            focusID = only.id
-            session.treeFocusID = only.id
+            focusPerson(only.id)
         } else if people.count > 1 {
             jumpTarget = kind
             showJumpPicker = true
         }
+    }
+
+    private func perform(_ action: TreeMenuAction) {
+        switch action {
+        case .findPerson:
+            showPersonPicker = true
+        case .recenter:
+            canvasRecenterID += 1
+        case .focusMe:
+            guard let meID = settings?.mePersonID else { return }
+            focusPerson(meID)
+        case .expandAll:
+            collapsedIDs.removeAll()
+        }
+    }
+
+    private func focusPerson(_ id: UUID, resetCamera: Bool = true) {
+        focusID = id
+        session.treeFocusID = id
+        if resetCamera {
+            canvasRecenterID += 1
+        }
+    }
+}
+
+private enum TreeMenuAction: Equatable {
+    case findPerson
+    case recenter
+    case focusMe
+    case expandAll
+}
+
+private struct TreeMenuCommand: Equatable {
+    var id = UUID()
+    var action: TreeMenuAction
+
+    init(_ action: TreeMenuAction) {
+        self.action = action
     }
 }
 
@@ -220,33 +300,69 @@ private enum JumpKind: String, Identifiable {
     }
 }
 
+private struct UnlinkedPeopleBar: View {
+    let people: [Person]
+    var onSelect: (UUID) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Unlinked")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(people) { person in
+                        Button {
+                            onSelect(person.id)
+                        } label: {
+                            Text(person.displayName)
+                                .font(.caption.weight(.semibold))
+                                .lineLimit(1)
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 10)
+    }
+}
+
 private struct TreeJumpBar: View {
     let graph: RelationshipGraph
     let focusID: UUID
     var onJump: (JumpKind) -> Void
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             jumpButton(.parents, systemImage: "arrow.up", enabled: !graph.parents(of: focusID).isEmpty)
             jumpButton(.siblings, systemImage: "person.2", enabled: !graph.siblings(of: focusID).isEmpty)
             jumpButton(.spouses, systemImage: "heart", enabled: !graph.spousesAndPartners(of: focusID).isEmpty)
             jumpButton(.children, systemImage: "arrow.down", enabled: !graph.children(of: focusID).isEmpty)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(.bar)
     }
 
     private func jumpButton(_ kind: JumpKind, systemImage: String, enabled: Bool) -> some View {
         Button {
             onJump(kind)
         } label: {
-            Label(kind.title, systemImage: systemImage)
-                .font(.caption.weight(.semibold))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+            VStack(spacing: 3) {
+                Image(systemName: systemImage)
+                    .font(.footnote.weight(.semibold))
+                Text(kind.title)
+                    .font(.caption2.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
         }
         .buttonStyle(.bordered)
         .disabled(!enabled)
+        .accessibilityLabel(kind.title)
     }
 }

@@ -2396,6 +2396,22 @@
         }
       }
     },
+    "Find person" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find person"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tìm người"
+          }
+        }
+      }
+    },
     "Focus Me" : {
       "localizations" : {
         "en" : {
@@ -6614,6 +6630,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật nhắc giỗ trên iPhone để xem sinh nhật, giỗ và ngày cưới ở đây."
+          }
+        }
+      }
+    },
+    "Unlinked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlinked"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chưa liên kết"
           }
         }
       }
