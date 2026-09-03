@@ -2009,6 +2009,7 @@
       }
     },
     "Expand all" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2413,6 +2414,7 @@
       }
     },
     "Focus Me" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5303,6 +5305,7 @@
       }
     },
     "Recenter" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6634,22 +6637,6 @@
         }
       }
     },
-    "Unlinked" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlinked"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chưa liên kết"
-          }
-        }
-      }
-    },
     "Unknown" : {
       "localizations" : {
         "en" : {
@@ -6662,6 +6649,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không rõ"
+          }
+        }
+      }
+    },
+    "Unlinked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlinked"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chưa liên kết"
           }
         }
       }

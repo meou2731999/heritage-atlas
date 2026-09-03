@@ -137,11 +137,15 @@ struct PersonPickerSheet: View {
     let title: LocalizedStringKey
     var excludedIDs: Set<UUID> = []
     var allowNone = false
+    var autofocusSearch = false
     var onSelect: (Person?) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Person.fullName) private var people: [Person]
     @State private var query = ""
+    @State private var isSearchPresented = true
+    @State private var canDismissFromSearch = false
+    @FocusState private var isSearchFieldFocused: Bool
 
     private var filtered: [Person] {
         people
@@ -168,13 +172,26 @@ struct PersonPickerSheet: View {
                     .buttonStyle(.plain)
                 }
             }
-            .searchable(text: $query, prompt: "Name or nickname")
+            .searchable(
+                text: $query,
+                isPresented: $isSearchPresented,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Name or nickname"
+            )
+            .searchFocused($isSearchFieldFocused)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+            .onChange(of: isSearchPresented) { _, presented in
+                guard canDismissFromSearch, presented == false else { return }
+                dismiss()
+            }
+            .task {
+                isSearchPresented = true
+                if autofocusSearch {
+                    try? await Task.sleep(for: .milliseconds(100))
+                    isSearchFieldFocused = true
                 }
+                canDismissFromSearch = true
             }
         }
     }

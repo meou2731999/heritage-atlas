@@ -16,8 +16,6 @@ struct FamilyTreeView: View {
     @State private var showPersonPicker = false
     @State private var jumpTarget: JumpKind?
     @State private var showJumpPicker = false
-    @State private var canvasRecenterID = 0
-    @State private var pendingMenuCommand: TreeMenuCommand?
 
     private var settings: AppSettings? { settingsRows.first }
     private var photoIDs: [UUID: UUID] {
@@ -64,9 +62,8 @@ struct FamilyTreeView: View {
                             layout: layout,
                             focusID: resolvedFocusID,
                             photoIDs: photoIDs,
-                            recenterID: canvasRecenterID,
                             onFocus: { id in
-                                focusPerson(id, resetCamera: false)
+                                focusPerson(id)
                             },
                             onOpenProfile: { id in
                                 path.append(id)
@@ -102,7 +99,7 @@ struct FamilyTreeView: View {
                 }
             }
             .sheet(isPresented: $showPersonPicker) {
-                PersonPickerSheet(title: "Find person") { person in
+                PersonPickerSheet(title: "Find person", autofocusSearch: true) { person in
                     if let person {
                         focusPerson(person.id)
                     }
@@ -126,10 +123,6 @@ struct FamilyTreeView: View {
                 if let newValue {
                     focusID = newValue
                 }
-            }
-            .onChange(of: pendingMenuCommand) { _, command in
-                guard let command else { return }
-                perform(command.action)
             }
         }
     }
@@ -173,25 +166,12 @@ struct FamilyTreeView: View {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Menu {
-                Button("Find person", systemImage: "magnifyingglass") {
-                    pendingMenuCommand = TreeMenuCommand(.findPerson)
-                }
-                Divider()
-                Button("Recenter", systemImage: "scope") {
-                    pendingMenuCommand = TreeMenuCommand(.recenter)
-                }
-                if settings?.mePersonID != nil {
-                    Button("Focus Me", systemImage: "person.crop.circle") {
-                        pendingMenuCommand = TreeMenuCommand(.focusMe)
-                    }
-                }
-                Button("Expand all", systemImage: "arrow.up.left.and.arrow.down.right") {
-                    pendingMenuCommand = TreeMenuCommand(.expandAll)
-                }
+            Button {
+                showPersonPicker = true
             } label: {
-                Image(systemName: "ellipsis.circle")
+                Image(systemName: "magnifyingglass")
             }
+            .accessibilityLabel("Find person")
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
             if let resolvedFocusID {
@@ -234,42 +214,9 @@ struct FamilyTreeView: View {
         }
     }
 
-    private func perform(_ action: TreeMenuAction) {
-        switch action {
-        case .findPerson:
-            showPersonPicker = true
-        case .recenter:
-            canvasRecenterID += 1
-        case .focusMe:
-            guard let meID = settings?.mePersonID else { return }
-            focusPerson(meID)
-        case .expandAll:
-            collapsedIDs.removeAll()
-        }
-    }
-
-    private func focusPerson(_ id: UUID, resetCamera: Bool = true) {
+    private func focusPerson(_ id: UUID) {
         focusID = id
         session.treeFocusID = id
-        if resetCamera {
-            canvasRecenterID += 1
-        }
-    }
-}
-
-private enum TreeMenuAction: Equatable {
-    case findPerson
-    case recenter
-    case focusMe
-    case expandAll
-}
-
-private struct TreeMenuCommand: Equatable {
-    var id = UUID()
-    var action: TreeMenuAction
-
-    init(_ action: TreeMenuAction) {
-        self.action = action
     }
 }
 
