@@ -5,6 +5,7 @@ import SwiftUI
 
 struct PlaceEditorView: View {
     var placeID: UUID?
+    var initialCoordinate: GeoPoint? = nil
 
     @Environment(FamilySession.self) private var session
     @Environment(DeviceLocationSession.self) private var location
@@ -126,6 +127,10 @@ struct PlaceEditorView: View {
             if let point = existing.geoPoint {
                 cameraPosition = .region(PlaceMapRegion.region(around: point))
             }
+        } else if let dropped = initialCoordinate, dropped.isValid {
+            latitudeText = PlaceCoordinateText.format(dropped.latitude)
+            longitudeText = PlaceCoordinateText.format(dropped.longitude)
+            cameraPosition = .region(PlaceMapRegion.region(around: dropped))
         } else if let here = location.coordinate {
             cameraPosition = .region(PlaceMapRegion.region(around: here, span: 0.08))
         }

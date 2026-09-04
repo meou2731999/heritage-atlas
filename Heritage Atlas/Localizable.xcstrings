@@ -686,6 +686,7 @@
       }
     },
     "Add places with coordinates to see pins here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6536,6 +6537,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hôm nay tắt"
+          }
+        }
+      }
+    },
+    "Touch and hold the map to add a place." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch and hold the map to add a place."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chạm và giữ trên bản đồ để thêm nơi."
           }
         }
       }

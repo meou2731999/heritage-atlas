@@ -18,6 +18,7 @@ struct MapHubView: View {
     @State private var selectedPin: PlacePin?
     @State private var editorItem: PlaceEditorItem?
     @State private var didFitCamera = false
+    @State private var dropFeedback = 0
 
     private var pins: [PlacePin] {
         PlacePin.build(
@@ -47,7 +48,8 @@ struct MapHubView: View {
                     latitudeSpan: $latitudeSpan,
                     selection: $selection,
                     selectedPin: $selectedPin,
-                    showsUserLocation: location.isAuthorized
+                    showsUserLocation: location.isAuthorized,
+                    onLongPressPlace: dropPlace(at:)
                 )
             }
             .background(Color(.systemGroupedBackground))
@@ -85,8 +87,9 @@ struct MapHubView: View {
                 .presentationDetents([.medium, .large])
             }
             .sheet(item: $editorItem) { item in
-                PlaceEditorView(placeID: item.placeID)
+                PlaceEditorView(placeID: item.placeID, initialCoordinate: item.coordinate)
             }
+            .sensoryFeedback(.impact(weight: .medium), trigger: dropFeedback)
             .onAppear {
                 if location.isAuthorized {
                     location.start(heading: false)
@@ -119,6 +122,14 @@ struct MapHubView: View {
         didFitCamera = true
     }
 
+    private func dropPlace(at point: GeoPoint) {
+        guard point.isValid else { return }
+        selection = nil
+        selectedPin = nil
+        dropFeedback += 1
+        editorItem = PlaceEditorItem(placeID: nil, coordinate: point)
+    }
+
     private func focusRequestedPlace() {
         guard let focusID = session.mapFocusPlaceID,
               let pin = pins.first(where: { $0.id == focusID }) ?? PlacePin.build(
@@ -136,6 +147,7 @@ struct MapHubView: View {
 
 private struct PlaceEditorItem: Identifiable {
     var placeID: UUID?
+    var coordinate: GeoPoint?
     var id: String { placeID?.uuidString ?? "new" }
 }
 
@@ -146,6 +158,7 @@ struct FamilyMapCanvas: View {
     @Binding var selection: String?
     @Binding var selectedPin: PlacePin?
     var showsUserLocation: Bool
+    var onLongPressPlace: (GeoPoint) -> Void = { _ in }
 
     private var glyphs: [MapGlyph] {
         let items = pins.map { (id: $0.id, point: $0.point) }
@@ -194,49 +207,70 @@ struct FamilyMapCanvas: View {
     }
 
     var body: some View {
-        Map(position: $cameraPosition, selection: $selection) {
-            ForEach(glyphs) { glyph in
-                if glyph.isCluster {
-                    Annotation(glyph.title, coordinate: glyph.coordinate, anchor: .center) {
-                        ClusterBadge(count: glyph.count)
-                    }
-                    .tag(Optional(glyph.id))
-                } else {
-                    Marker(glyph.title, systemImage: glyph.role.systemImageName, coordinate: glyph.coordinate)
-                        .tint(glyph.role.mapTint)
+        MapReader { proxy in
+            Map(position: $cameraPosition, selection: $selection) {
+                ForEach(glyphs) { glyph in
+                    if glyph.isCluster {
+                        Annotation(glyph.title, coordinate: glyph.coordinate, anchor: .center) {
+                            ClusterBadge(count: glyph.count)
+                        }
                         .tag(Optional(glyph.id))
+                    } else {
+                        Marker(glyph.title, systemImage: glyph.role.systemImageName, coordinate: glyph.coordinate)
+                            .tint(glyph.role.mapTint)
+                            .tag(Optional(glyph.id))
+                    }
+                }
+                if showsUserLocation {
+                    UserAnnotation()
                 }
             }
-            if showsUserLocation {
-                UserAnnotation()
+            .mapControls {
+                MapUserLocationButton()
+                MapCompass()
+                MapScaleView()
             }
-        }
-        .mapControls {
-            MapUserLocationButton()
-            MapCompass()
-            MapScaleView()
-        }
-        .mapStyle(.standard(elevation: .realistic))
-        .onMapCameraChange(frequency: .onEnd) { context in
-            latitudeSpan = context.region.span.latitudeDelta
-        }
-        .onChange(of: selection) { _, newValue in
-            handleSelection(newValue)
-        }
-        .overlay(alignment: .bottom) {
-            if pins.isEmpty {
-                emptyBanner
-                    .padding()
+            .mapStyle(.standard(elevation: .realistic))
+            .onMapCameraChange(frequency: .onEnd) { context in
+                latitudeSpan = context.region.span.latitudeDelta
+            }
+            .onChange(of: selection) { _, newValue in
+                handleSelection(newValue)
+            }
+            .simultaneousGesture(dropPlaceGesture(proxy: proxy))
+            .accessibilityHint("Touch and hold the map to add a place.")
+            .overlay(alignment: .bottom) {
+                if pins.isEmpty {
+                    emptyBanner
+                        .padding()
+                }
             }
         }
     }
 
     private var emptyBanner: some View {
-        Text("Add places with coordinates to see pins here.")
+        Text("Touch and hold the map to add a place.")
             .font(.subheadline)
             .multilineTextAlignment(.center)
             .padding(12)
             .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    private func dropPlaceGesture(proxy: MapProxy) -> some Gesture {
+        LongPressGesture(minimumDuration: 0.45)
+            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .local))
+            .onEnded { value in
+                guard case .second(true, let drag) = value else { return }
+                guard let location = drag?.location ?? drag?.startLocation else { return }
+                handleLongPress(location, proxy: proxy)
+            }
+    }
+
+    private func handleLongPress(_ position: CGPoint, proxy: MapProxy) {
+        guard let coordinate = proxy.convert(position, from: .local) else { return }
+        let point = GeoPoint(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        guard point.isValid else { return }
+        onLongPressPlace(point)
     }
 
     private func handleSelection(_ id: String?) {
